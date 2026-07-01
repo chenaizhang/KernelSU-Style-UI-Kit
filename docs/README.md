@@ -1,10 +1,10 @@
-# Kernel Style UI Kit
+# KernelSU Style UI Kit
 
 English | [简体中文](README.zh-CN.md)
 
 ## Introduction
 
-Kernel Style UI Kit is an Android UI template project extracted and reorganized from the visual style of KernelSU Manager.
+KernelSU Style UI Kit is an Android UI template project extracted and reorganized from the visual style of KernelSU Manager.
 
 The project keeps the original Miuix and Material interface styles while removing practical KernelSU functionality such as root access, module management, flashing, and superuser authorization. It is intended as a reusable UI starter template for Android open-source apps, allowing developers to replace the business logic, update branding, and continue building on top of it.
 
@@ -30,8 +30,8 @@ Currently retained practical features include:
 1. Clone the project:
 
 ```bash
-git clone https://github.com/chenaizhang/Kernel-Style-UI-Kit.git
-cd Kernel-Style-UI-Kit
+git clone https://github.com/chenaizhang/KernelSU-Style-UI-Kit.git
+cd KernelSU-Style-UI-Kit
 ```
 
 2. Open the project with Android Studio and wait for Gradle sync to finish.

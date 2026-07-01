@@ -26,7 +26,7 @@ apksign {
 }
 
 android {
-    namespace = "com.example.kernelstyleuikit"
+    namespace = "com.example.kernelsustyleuikit"
     val isPrBuild = project.findProperty("IS_PR_BUILD")?.toString()?.toBoolean() ?: false
 
     buildTypes {
@@ -71,7 +71,7 @@ android {
     buildToolsVersion = androidBuildToolsVersion
 
     defaultConfig {
-        applicationId = "com.example.kernelstyleuikit"
+        applicationId = "com.example.kernelsustyleuikit"
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
         versionCode = managerVersionCode
@@ -99,7 +99,7 @@ androidComponents {
 
 base {
     archivesName.set(
-        "KernelStyleUIKit_${managerVersionName}_${managerVersionCode}"
+        "KernelSUStyleUIKit_${managerVersionName}_${managerVersionCode}"
     )
 }
 

@@ -1,10 +1,10 @@
-# Kernel Style UI Kit
+# KernelSU Style UI Kit
 
 [English](README.md) | 简体中文
 
 ## 介绍
 
-Kernel Style UI Kit 是一个基于 KernelSU Manager 界面风格整理而来的 Android UI 模板项目。
+KernelSU Style UI Kit 是一个基于 KernelSU Manager 界面风格整理而来的 Android UI 模板项目。
 
 项目保留了原有的 Miuix 与 Material 两套界面风格，并移除了 root、模块管理、刷写、超级用户授权等实际 KernelSU 功能逻辑。它适合作为 Android 开源应用的 UI 起始模板，开发者可以在此基础上替换业务逻辑、调整品牌信息并继续扩展。
 
@@ -30,8 +30,8 @@ Kernel Style UI Kit 是一个基于 KernelSU Manager 界面风格整理而来的
 1. 克隆项目：
 
 ```bash
-git clone https://github.com/chenaizhang/Kernel-Style-UI-Kit.git
-cd Kernel-Style-UI-Kit
+git clone https://github.com/chenaizhang/KernelSU-Style-UI-Kit.git
+cd KernelSU-Style-UI-Kit
 ```
 
 2. 使用 Android Studio 打开项目，等待 Gradle 同步完成。

@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name" translatable="false">Kernel Style UI Kit</string>
+    <string name="app_name" translatable="false">KernelSU Style UI Kit</string>
     <string name="home_sample_notification" translatable="false">这是一条示例通知</string>
     <string name="home_app_version" translatable="false">App 版本</string>
     <string name="home_example_link_title" translatable="false">这是一条示例链接</string>
     <string name="home_example_link_subtitle" translatable="false">这是示例链接的副标题</string>
-    <string name="home_example_link_url" translatable="false">https://github.com/chenaizhang/Kernel-Style-UI-Kit</string>
+    <string name="home_example_link_url" translatable="false">https://github.com/chenaizhang/KernelSU-Style-UI-Kit</string>
     <string name="about_source_link" translatable="false">在%1$s 上查看源码</string>
     <string name="permission_section">Permissions</string>
     <string name="permission_ready">Core permissions are ready.</string>

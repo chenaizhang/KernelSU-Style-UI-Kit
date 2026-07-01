@@ -17,5 +17,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "KernelStyleUIKit"
+rootProject.name = "KernelSUStyleUIKit"
 include(":app")
