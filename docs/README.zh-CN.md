@@ -1,19 +1,17 @@
-# KernelSU Style UI Kit
-
 [English](README.md) | 简体中文
 
-## 介绍
+# KernelSU Style UI Kit
 
-KernelSU Style UI Kit 是一个基于 KernelSU Manager 界面风格整理而来的 Android UI 模板项目。
+KernelSU Style UI Kit 是一个基于 KernelSU Manager 的 Miuix 与 Material 两套界面整理而来的 Android UI 模板项目。
 
-项目保留了原有的 Miuix 与 Material 两套界面风格，并移除了 root、模块管理、刷写、超级用户授权等实际 KernelSU 功能逻辑。它适合作为 Android 开源应用的 UI 起始模板，开发者可以在此基础上替换业务逻辑、调整品牌信息并继续扩展。
+模板包含常用页面和应用基础功能，可作为新项目的起点，不包含 KernelSU 的 root、模块管理或刷写等实际功能。
 
-当前保留的实际功能包括：
+## 功能
 
-- 检查更新
-- 发送日志
-- 语言自动切换
-- Miuix / Material 主题切换
+- Miuix 与 Material 两套风格，支持浅色、深色和动态配色。
+- 首页、设置、关于及权限示例页面。
+- 基于 GitHub Releases 的更新检查与日志分享。
+- 跟随系统语言，支持英语、简体中文和繁体中文。
 
 ## 截图
 
@@ -25,54 +23,34 @@ KernelSU Style UI Kit 是一个基于 KernelSU Manager 界面风格整理而来�
 | --- | --- | --- |
 | <img src="assets/screenshots/material-home.webp" width="220" alt="Material 首页"> | <img src="assets/screenshots/material-settings.webp" width="220" alt="Material 设置"> | <img src="assets/screenshots/material-theme.webp" width="220" alt="Material 主题设置"> |
 
-## 使用方法
+## 快速开始
 
-1. 使用 GitHub 的 `Use this template` 创建你的项目，或者直接克隆：
+[使用此模板创建仓库](https://github.com/chenaizhang/KernelSU-Style-UI-Kit/generate)，然后使用 Android Studio 打开项目。
+
+也可以先克隆到本地体验：
 
 ```bash
 git clone https://github.com/chenaizhang/KernelSU-Style-UI-Kit.git
 cd KernelSU-Style-UI-Kit
-```
-
-2. 使用 Android Studio 打开项目，等待 Gradle 同步完成。
-
-3. 先确认模板可以构建：
-
-```bash
 ./gradlew :app:assembleDebug
 ```
 
-4. 按迁移清单替换项目名、包名、图标、链接和示例内容：
+需要 JDK 21、Android SDK 37，以及 Android 12 或更高版本的设备或模拟器。
 
-[从模板开始新项目](GETTING_STARTED.zh-CN.md)
-
-5. 构建调试包：
-
-```bash
-./gradlew :app:assembleDebug
-```
-
-6. 如果需要发布版本，请基于 `sign.example.properties` 创建自己的签名配置文件，并填入真实 keystore 信息。不要将真实签名文件或密码提交到仓库。
+项目配置、自定义、测试与发布签名见[上手指南](GETTING_STARTED.zh-CN.md)；新增语言见[翻译指南](../translations/README.md#简体中文)。
 
 ## 讨论
 
-问题反馈、功能建议和模板使用讨论请写在 GitHub Issues 中。
+问题反馈、功能建议和使用讨论请提交到 [GitHub Issues](https://github.com/chenaizhang/KernelSU-Style-UI-Kit/issues)。反馈问题时，请附上设备与 Android 版本、界面风格、复现步骤，以及相关截图或日志。
 
-请尽量在 Issue 中提供：
+欢迎通过 [Pull Request](https://github.com/chenaizhang/KernelSU-Style-UI-Kit/pulls) 参与贡献。
 
-- 设备和 Android 版本
-- 使用的界面模式，Miuix 或 Material
-- 复现步骤
-- 截图或日志
+## 许可证
 
-## 许可证 GPL3
-
-本项目使用 GNU General Public License v3.0 许可证发布。详情请查看项目根目录的 `LICENSE` 文件。
+本项目采用 GNU General Public License v3.0，详见 [LICENSE](../LICENSE)。
 
 ## 致谢
 
-感谢 KernelSU Manager 项目提供的界面基础与开源参考。
-
-感谢 Miuix、Jetpack Compose、Material Design 以及相关开源生态。
-
-感谢所有提出建议、提交 Issue 和参与改进这个模板的开发者。
+- [KernelSU](https://github.com/tiann/KernelSU)：提供 Manager 界面基础。
+- [Miuix](https://github.com/compose-miuix-ui/miuix)：提供 Compose 组件。
+- [Jetpack Compose](https://developer.android.com/compose) 与 [Material Design](https://m3.material.io/)：提供 Android UI 生态支持。

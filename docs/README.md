@@ -1,19 +1,17 @@
-# KernelSU Style UI Kit
-
 English | [简体中文](README.zh-CN.md)
 
-## Introduction
+# KernelSU Style UI Kit
 
-KernelSU Style UI Kit is an Android UI template project extracted and reorganized from the visual style of KernelSU Manager.
+KernelSU Style UI Kit is an Android UI template project adapted from KernelSU Manager's Miuix and Material interfaces.
 
-The project keeps the original Miuix and Material interface styles while removing practical KernelSU functionality such as root access, module management, flashing, and superuser authorization. It is intended as a reusable UI starter template for Android open-source apps, allowing developers to replace the business logic, update branding, and continue building on top of it.
+The template includes common screens and basic app functionality as a starting point for new projects. It does not include KernelSU functionality such as root access, module management, or flashing.
 
-Currently retained practical features include:
+## Features
 
-- Update checking
-- Log sharing
-- Automatic language switching
-- Miuix / Material theme switching
+- Miuix and Material styles with light, dark, and dynamic color options.
+- Home, settings, About, and permission example screens.
+- GitHub Releases update checking and log sharing.
+- System language support for English, Simplified Chinese, and Traditional Chinese.
 
 ## Screenshots
 
@@ -25,54 +23,34 @@ Currently retained practical features include:
 | --- | --- | --- |
 | <img src="assets/screenshots/material-home.webp" width="220" alt="Material Home"> | <img src="assets/screenshots/material-settings.webp" width="220" alt="Material Settings"> | <img src="assets/screenshots/material-theme.webp" width="220" alt="Material Theme Settings"> |
 
-## Usage
+## Getting Started
 
-1. Create your project with GitHub `Use this template`, or clone it directly:
+[Create a repository from this template](https://github.com/chenaizhang/KernelSU-Style-UI-Kit/generate), then open it in Android Studio.
+
+To try the template locally:
 
 ```bash
 git clone https://github.com/chenaizhang/KernelSU-Style-UI-Kit.git
 cd KernelSU-Style-UI-Kit
-```
-
-2. Open the project with Android Studio and wait for Gradle sync to finish.
-
-3. Verify that the template builds:
-
-```bash
 ./gradlew :app:assembleDebug
 ```
 
-4. Follow the migration checklist to replace the project name, package, icons, links, and sample content:
+Requires JDK 21, Android SDK 37, and an Android 12 or newer device or emulator.
 
-[Start a new project from this template](GETTING_STARTED.md)
-
-5. Build the debug APK:
-
-```bash
-./gradlew :app:assembleDebug
-```
-
-6. For release builds, create your own signing configuration based on `sign.example.properties` and fill in real keystore information. Do not commit real signing files or passwords to the repository.
+See the [Getting Started guide](GETTING_STARTED.md) for project setup, customization, testing, and release signing. See [Translations](../translations/README.md#english) to add another language.
 
 ## Discussion
 
-Please use GitHub Issues for bug reports, feature suggestions, and template usage discussions.
+Use [GitHub Issues](https://github.com/chenaizhang/KernelSU-Style-UI-Kit/issues) for bug reports, feature requests, and usage questions. For bugs, include the device and Android version, UI style, reproduction steps, and relevant screenshots or logs.
 
-When opening an Issue, please include as much context as possible:
+Contributions are welcome through [pull requests](https://github.com/chenaizhang/KernelSU-Style-UI-Kit/pulls).
 
-- Device model and Android version
-- UI mode used, Miuix or Material
-- Steps to reproduce
-- Screenshots or logs
+## License
 
-## License GPL3
-
-This project is released under the GNU General Public License v3.0. See the `LICENSE` file in the project root for details.
+Licensed under the GNU General Public License v3.0. See [LICENSE](../LICENSE).
 
 ## Acknowledgements
 
-Thanks to the KernelSU Manager project for the original UI foundation and open-source reference.
-
-Thanks to Miuix, Jetpack Compose, Material Design, and the related open-source ecosystem.
-
-Thanks to all developers who provide feedback, open Issues, and help improve this template.
+- [KernelSU](https://github.com/tiann/KernelSU) for the Manager UI foundation.
+- [Miuix](https://github.com/compose-miuix-ui/miuix) for its Compose components.
+- [Jetpack Compose](https://developer.android.com/compose) and [Material Design](https://m3.material.io/) for the Android UI ecosystem.
