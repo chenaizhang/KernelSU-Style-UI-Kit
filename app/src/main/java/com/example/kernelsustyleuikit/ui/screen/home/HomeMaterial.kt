@@ -11,35 +11,42 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ErrorOutline
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.filled.Smartphone
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFlexibleTopAppBar
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.kernelsustyleuikit.R
 import com.example.kernelsustyleuikit.permission.PermissionState
 import com.example.kernelsustyleuikit.ui.component.material.TonalCard
+import com.example.kernelsustyleuikit.ui.component.material.SegmentedColumn
+import com.example.kernelsustyleuikit.ui.component.material.SegmentedListItem
 
 @Composable
 fun HomePagerMaterial(
@@ -64,9 +71,9 @@ fun HomePagerMaterial(
         ) {
             // Keep the theme settings preview in sync whenever this home layout changes.
             WarningCard(stringResource(R.string.home_sample_notification))
-            PermissionCard(permissionState, actions.onPermissionsClick)
+            PermissionCard(permissionState, state.systemInfo.appVersion, actions.onPermissionsClick)
             InfoCard(systemInfo = state.systemInfo)
-            ExampleLinkCard(onOpenUrl = actions.onOpenUrl)
+            LearnMoreCard(onOpenUrl = actions.onOpenUrl)
             Spacer(Modifier.height(bottomInnerPadding))
         }
     }
@@ -90,81 +97,44 @@ private fun TopBar(
 @Composable
 private fun PermissionCard(
     state: PermissionState,
+    appVersion: String,
     onClick: () -> Unit,
 ) {
-    Card(
+    val containerColor =
+        if (state.requiredGranted) MaterialTheme.colorScheme.secondaryContainer
+        else MaterialTheme.colorScheme.errorContainer
+    val contentColor = MaterialTheme.colorScheme.contentColorFor(containerColor)
+    val title = stringResource(
+        if (state.requiredGranted) R.string.permission_status_ready_title
+        else R.string.permission_status_missing_title
+    )
+
+    Surface(
         modifier = Modifier.fillMaxWidth(),
         onClick = onClick,
-        colors = CardDefaults.cardColors(
-            containerColor =
-                if (state.requiredGranted) MaterialTheme.colorScheme.secondaryContainer
-                else MaterialTheme.colorScheme.errorContainer,
-            contentColor =
-                if (state.requiredGranted) MaterialTheme.colorScheme.onSecondaryContainer
-                else MaterialTheme.colorScheme.onErrorContainer,
-        ),
+        color = containerColor,
+        contentColor = contentColor,
+        shape = MaterialTheme.shapes.large,
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.permission_section),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                    Text(
-                        text =
-                            if (state.requiredGranted) {
-                                stringResource(R.string.permission_ready)
-                            } else {
-                                stringResource(R.string.permission_missing)
-                            },
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                }
-                AssistChip(
-                    onClick = { },
-                    colors = AssistChipDefaults.assistChipColors(
-                        labelColor =
-                            if (state.requiredGranted) {
-                                MaterialTheme.colorScheme.onSecondaryContainer
-                            } else {
-                                MaterialTheme.colorScheme.onErrorContainer
-                            },
-                        leadingIconContentColor =
-                            if (state.requiredGranted) {
-                                MaterialTheme.colorScheme.onSecondaryContainer
-                            } else {
-                                MaterialTheme.colorScheme.onErrorContainer
-                            },
-                    ),
-                    label = {
-                        Text(
-                            if (state.requiredGranted) {
-                                stringResource(R.string.permission_granted)
-                            } else {
-                                stringResource(R.string.permission_action_required)
-                            }
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector =
-                                if (state.requiredGranted) Icons.Default.CheckCircle
-                                else Icons.Default.ErrorOutline,
-                            contentDescription = null,
-                        )
-                    },
+        ListItem(
+            leadingContent = {
+                Icon(
+                    imageVector =
+                        if (state.requiredGranted) Icons.Default.CheckCircle else Icons.Default.ErrorOutline,
+                    contentDescription = title,
                 )
-            }
-        }
+            },
+            supportingContent = { Text(appVersion, style = MaterialTheme.typography.bodyMedium) },
+            verticalAlignment = Alignment.CenterVertically,
+            colors = ListItemDefaults.colors(
+                containerColor = Color.Transparent,
+                contentColor = contentColor,
+                leadingContentColor = contentColor,
+                supportingContentColor = contentColor.copy(alpha = 0.7f),
+            ),
+            elevation = ListItemDefaults.elevation(),
+            content = { Text(title, style = MaterialTheme.typography.titleMediumEmphasized) },
+        )
     }
 }
 
@@ -191,47 +161,45 @@ private fun WarningCard(
 }
 
 @Composable
-private fun ExampleLinkCard(onOpenUrl: (String) -> Unit) {
-    val url = stringResource(R.string.home_example_link_url)
-    TonalCard(onClick = { onOpenUrl(url) }) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(24.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(text = stringResource(R.string.home_example_link_title), style = MaterialTheme.typography.titleSmall)
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    text = stringResource(R.string.home_example_link_subtitle),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.outline
+private fun LearnMoreCard(onOpenUrl: (String) -> Unit) {
+    val url = stringResource(R.string.home_learn_more_url)
+    SegmentedColumn(content = listOf {
+        SegmentedListItem(
+            onClick = { onOpenUrl(url) },
+            headlineContent = {
+                Text(stringResource(R.string.home_learn_more_title, stringResource(R.string.app_name)))
+            },
+            supportingContent = { Text(stringResource(R.string.home_learn_more_summary)) },
+            leadingContent = {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.MenuBook,
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
                 )
-            }
-        }
-    }
+            },
+            trailingContent = { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null) },
+        )
+    })
 }
 
 @Composable
 private fun InfoCard(systemInfo: SystemInfo) {
-    TonalCard {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 16.dp)
-        ) {
-            @Composable
-            fun InfoCardItem(label: String, content: String) {
-                Text(text = label, style = MaterialTheme.typography.bodyLarge)
+    @Composable
+    fun InfoCardItem(icon: ImageVector, label: String, content: String) {
+        SegmentedListItem(
+            headlineContent = { Text(label, style = MaterialTheme.typography.bodyLarge) },
+            leadingContent = { Icon(icon, contentDescription = null) },
+            supportingContent = {
                 Text(
                     text = content,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.outline
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-            }
-
-            InfoCardItem(stringResource(R.string.home_app_version), systemInfo.appVersion)
-        }
+            },
+        )
     }
+    SegmentedColumn(content = listOf(
+        { InfoCardItem(Icons.Filled.Smartphone, stringResource(R.string.home_device_model), systemInfo.deviceModel) },
+        { InfoCardItem(Icons.Filled.Android, stringResource(R.string.home_android_version), systemInfo.androidVersion) },
+    ))
 }

@@ -13,6 +13,8 @@ data class AppVersion(
 @Immutable
 data class SystemInfo(
     val appVersion: String,
+    val deviceModel: String,
+    val androidVersion: String,
 )
 
 fun getAppVersion(context: Context): AppVersion {

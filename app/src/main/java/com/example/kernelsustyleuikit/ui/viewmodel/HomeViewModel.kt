@@ -1,6 +1,7 @@
 package com.example.kernelsustyleuikit.ui.viewmodel
 
 import android.content.Context
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,7 @@ import com.example.kernelsustyleuikit.ui.screen.home.SystemInfo
 import com.example.kernelsustyleuikit.ui.screen.home.getAppVersion
 import com.example.kernelsustyleuikit.ui.util.LatestVersionInfo
 import com.example.kernelsustyleuikit.ui.util.checkNewVersion
+import com.example.kernelsustyleuikit.ui.util.resolveDeviceName
 
 class HomeViewModel : ViewModel() {
 
@@ -43,6 +45,8 @@ class HomeViewModel : ViewModel() {
             currentAppVersionCode = appVersion.versionCode,
             systemInfo = SystemInfo(
                 appVersion = "${appVersion.versionName} (${appVersion.versionCode})",
+                deviceModel = resolveDeviceName(),
+                androidVersion = "${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})",
             ),
         )
     }
