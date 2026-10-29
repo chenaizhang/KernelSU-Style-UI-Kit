@@ -111,7 +111,7 @@ androidComponents {
 
 base {
     archivesName.set(
-        "KernelSUStyleUIKit_${managerVersionName}_${managerVersionCode}"
+        "KernelSUStyleUIKit_v${managerVersionName}_${managerVersionCode}"
     )
 }
 
