@@ -2,6 +2,7 @@
 
 package com.example.kernelsustyleuikit.ui.component.miuix.effect
 
+import android.os.Build
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Box
@@ -32,7 +33,8 @@ fun BgEffectBackground(
     alpha: () -> Float = { 1f },
     content: @Composable BoxScope.() -> Unit,
 ) {
-    if (!isRuntimeShaderSupported()) {
+    // Keep the API check explicit so Lint can verify the entire shader call path.
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || !isRuntimeShaderSupported()) {
         Box(modifier = modifier, content = content)
         return
     }

@@ -41,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -126,7 +127,6 @@ fun AboutScreenMiuix(
                     titleColor = colorScheme.onSurface.copy(
                         alpha = ((scrollProgress - 0.35f) / 0.65f).coerceIn(0f, 1f),
                     ),
-                    defaultWindowInsetsPadding = false,
                     navigationIcon = {
                         IconButton(
                             onClick = actions.onBack
@@ -309,7 +309,8 @@ private fun AboutContent(
                                 )
                             } else Modifier
                         ),
-                    painter = painterResource(id = R.drawable.ic_logo),
+                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    colorFilter = ColorFilter.tint(colorScheme.onBackground),
                     contentDescription = null,
                 )
             }
