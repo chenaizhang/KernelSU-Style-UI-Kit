@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
+import android.text.Html
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.webkit.JavascriptInterface
+import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
@@ -15,19 +17,34 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.webkit.WebViewAssetLoader
+import com.example.kernelsustyleuikit.R
 import com.example.kernelsustyleuikit.templateApp
 import com.example.kernelsustyleuikit.ui.LocalUiMode
 import com.example.kernelsustyleuikit.ui.UiMode
@@ -47,6 +64,7 @@ import org.commonmark.ext.task.list.items.TaskListItemsExtension
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
 import top.yukonga.miuix.kmp.theme.MiuixTheme
+import top.yukonga.miuix.kmp.basic.Text as MiuixText
 import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
 import kotlin.math.abs
@@ -54,7 +72,6 @@ import kotlin.math.abs
 private val SEMICOLON_SPLIT = ";\\s*".toRegex()
 private val EQUALS_SPLIT = "=\\s*".toRegex()
 
-@SuppressLint("JavascriptInterface", "SetJavaScriptEnabled", "WrongConstant")
 @Composable
 fun GithubMarkdown(
     content: String,
@@ -67,7 +84,6 @@ fun GithubMarkdown(
     val fontScale = density.fontScale
     val pageScale = density.density / systemDensity
     val newTextZoom = (90 * pageScale * fontScale).toInt()
-    val scrollInterface = remember { MarkdownScrollInterface() }
 
     val isDark = isInDarkTheme()
     val dir = if (LocalLayoutDirection.current == LayoutDirection.Rtl) "rtl" else "ltr"
@@ -114,7 +130,56 @@ fun GithubMarkdown(
     """.trimIndent()
     val html = template
         .replace("@dir@", dir)
+        .replace("@commit_label@", Html.escapeHtml(stringResource(R.string.markdown_commit_suggestion)))
         .replace("@body@", body)
+
+    var rendererGeneration by remember { mutableIntStateOf(0) }
+    var rendererFailures by remember(content, isMarkdown) { mutableIntStateOf(0) }
+    var pendingRecovery by remember { mutableStateOf(false) }
+    val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
+
+    LaunchedEffect(pendingRecovery, lifecycleState) {
+        if (pendingRecovery && lifecycleState.isAtLeast(Lifecycle.State.RESUMED)) {
+            rendererGeneration++
+            pendingRecovery = false
+        }
+    }
+
+    // Bound retries per document, including across theme changes and background/resume.
+    if (rendererFailures >= 3) {
+        val message = stringResource(R.string.markdown_load_failed)
+        val modifier = Modifier.fillMaxWidth().padding(16.dp)
+        when (LocalUiMode.current) {
+            UiMode.Material -> Text(message, modifier = modifier)
+            UiMode.Miuix -> MiuixText(message, modifier = modifier)
+        }
+    } else {
+        key(rendererGeneration) {
+            MarkdownWebView(
+                html = html,
+                newTextZoom = newTextZoom,
+                onLoadingChange = onLoadingChange,
+                onRendererGone = {
+                    rendererFailures++
+                    pendingRecovery = rendererFailures < 3
+                    onLoadingChange(pendingRecovery)
+                },
+            )
+        }
+    }
+}
+
+@SuppressLint("JavascriptInterface", "SetJavaScriptEnabled", "WrongConstant")
+@Composable
+private fun MarkdownWebView(
+    html: String,
+    newTextZoom: Int,
+    onLoadingChange: (Boolean) -> Unit,
+    onRendererGone: () -> Unit,
+) {
+    val scrollInterface = remember { MarkdownScrollInterface() }
+    val currentOnLoadingChange by rememberUpdatedState(onLoadingChange)
+    val currentOnRendererGone by rememberUpdatedState(onRendererGone)
 
     AndroidView(
         factory = { context ->
@@ -142,12 +207,22 @@ fun GithubMarkdown(
                         FrameLayout.LayoutParams.WRAP_CONTENT
                     )
                     addJavascriptInterface(scrollInterface, "AndroidScroll")
-                    webViewClient = object : WebViewClient() {
+                    class MarkdownWebViewClient : WebViewClient() {
                         private val assetLoader = WebViewAssetLoader.Builder()
                             .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(context))
                             .build()
 
+                        override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
+                            Log.w("GithubMarkdown", "Renderer terminated; crashed=${detail.didCrash()}")
+                            // A terminated renderer's WebView must never be reused, even in onRelease.
+                            frameLayout.removeView(view)
+                            view.destroy()
+                            currentOnRendererGone()
+                            return true
+                        }
+
                         override fun onPageFinished(view: WebView, url: String) {
+                            if (view.parent !== frameLayout) return
                             super.onPageFinished(view, url)
 
                             val js = """
@@ -228,7 +303,7 @@ fun GithubMarkdown(
                         }
 
                         override fun onPageCommitVisible(view: WebView?, url: String?) {
-                            onLoadingChange(false)
+                            if (view?.parent === frameLayout) currentOnLoadingChange(false)
                         }
 
                         override fun shouldInterceptRequest(
@@ -261,6 +336,7 @@ fun GithubMarkdown(
                             }
                         }
                     }
+                    webViewClient = MarkdownWebViewClient()
                     setOnTouchListener(object : View.OnTouchListener {
                         private var isHorizontalScrollLocked = false
                         private var initialDownX = 0f
@@ -317,7 +393,7 @@ fun GithubMarkdown(
             webView.settings.textZoom = newTextZoom
             if (webView.tag != html) {
                 webView.tag = html
-                onLoadingChange(true)
+                currentOnLoadingChange(true)
                 webView.loadDataWithBaseURL(
                     "https://appassets.androidplatform.net", html,
                     "text/html", StandardCharsets.UTF_8.name(), null
