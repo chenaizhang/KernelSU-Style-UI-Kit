@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">หน้าหลัก</string>
+    <string name="settings">ตั้งค่า</string>
+    <string name="about">เกี่ยวกับ</string>
+    <string name="send_log">ส่ง logs</string>
+    <string name="settings_check_update">ตรวจสอบการอัปเดต</string>
+    <string name="settings_check_update_summary">ตรวจสอบการอัปเดตโดยอัตโนมัติเมื่อเปิดแอป</string>
+    <string name="save_log">บันทึก logs</string>
+    <string name="log_saved">บันทึก logs แล้ว</string>
+    <string name="confirm">ยืนยัน</string>
+    <string name="processing">กำลังประมวลผล…</string>
+    <string name="settings_theme">ธีม</string>
+    <string name="settings_theme_summary">เลือกธีมของแอป</string>
+    <string name="settings_theme_mode_system">ตามระบบ</string>
+    <string name="settings_theme_mode_light">สว่าง</string>
+    <string name="settings_theme_mode_dark">มืด</string>
+    <string name="settings_key_color">สีหลัก</string>
+    <string name="settings_key_color_default">ค่าเริ่มต้น</string>
+    <string name="color_blue">สีน้ำเงิน</string>
+    <string name="color_red">สีแดง</string>
+    <string name="color_green">สีเขียว</string>
+    <string name="color_purple">สีม่วง</string>
+    <string name="color_orange">สีส้ม</string>
+    <string name="color_teal">สีเขียวอมน้ำเงิน</string>
+    <string name="color_pink">สีชมพู</string>
+    <string name="color_brown">สีน้ำตาล</string>
+    <string name="color_deep_purple">สีม่วงเข้ม</string>
+    <string name="color_indigo">สีคราม</string>
+    <string name="color_cyan">สีฟ้าอมเขียว</string>
+    <string name="color_yellow">สีเหลือง</string>
+    <string name="color_amber">สีเหลืองอำพัน</string>
+    <string name="color_blue_grey">สีเทาอมฟ้า</string>
+    <string name="color_sakura">สีดอกซากุระ</string>
+    </resources>

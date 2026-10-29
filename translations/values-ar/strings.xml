@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">الرئيسية</string>
+    <string name="settings">الإعدادات</string>
+    <string name="about">من نحن</string>
+    <string name="send_log">إرسال السجلات</string>
+    <string name="settings_check_update_summary">التحقق تلقائيًا من وجود تحديثات عند فتح التطبيق</string>
+    <string name="settings_check_update">التحقق من التحديث</string>
+    <string name="save_log">حفظ السجلات</string>
+    <string name="log_saved">السجلات محفوظة</string>
+    <string name="confirm">تأكيد</string>
+    </resources>

@@ -1,5 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="home_sample_notification">这是一条示例通知</string>
+    <string name="home_device_model">设备型号</string>
+    <string name="home_android_version">Android 版本</string>
+    <string name="home_learn_more_title">了解 %1$s</string>
+    <string name="home_learn_more_summary">点击查看项目与使用文档</string>
+    <string name="about_source_link">在%1$s 上查看源码</string>
     <string name="permission_section">授权状态</string>
     <string name="permission_ready">核心权限已就绪，可正常使用相关功能。</string>
     <string name="permission_missing">请先授予缺失权限。</string>
@@ -11,7 +17,6 @@
     <string name="permission_granted">已授权</string>
     <string name="permission_required">必需</string>
     <string name="permission_optional">可选</string>
-    <string name="permission_action_required">待处理</string>
     <string name="permission_grant_action">去授权</string>
     <string name="permission_status_ready_title">授权已完成</string>
     <string name="permission_status_missing_title">需要完成授权</string>
@@ -26,7 +31,11 @@
     <string name="save_log">保存日志</string>
     <string name="log_saved">日志已保存</string>
     <string name="confirm">确认</string>
+    <string name="search">搜索</string>
+    <string name="clear_search">清除搜索内容</string>
     <string name="processing">处理中…</string>
+    <string name="markdown_load_failed">无法显示此内容，请关闭后重新打开再试。</string>
+    <string name="markdown_commit_suggestion">提交</string>
     <string name="settings_theme">主题设置</string>
     <string name="settings_theme_summary">自定义更多主题选项</string>
     <string name="settings_theme_mode_system">跟随系统</string>
@@ -62,4 +71,12 @@
     <string name="settings_floating_bottom_bar_summary">使用 Apple 风格的悬浮底栏</string>
     <string name="settings_enable_glass">液态玻璃</string>
     <string name="settings_enable_glass_summary">启用悬浮底栏的液态玻璃效果</string>
-    </resources>
+    <string name='settings_enable_swipe_dismiss'>横移返回手势</string>
+    <string name='settings_enable_swipe_dismiss_summary'>从屏幕边缘横移返回上一页</string>
+    <string name='settings_pager_gesture_mode'>页面切换手势</string>
+    <string name='settings_pager_gesture_native'>默认</string>
+    <string name='settings_pager_gesture_cross_axis'>跨轴拦截</string>
+    <string name='settings_pager_gesture_ios_like'>iOS 风格</string>
+    <string name='nav_rail_expand'>展开导航栏</string>
+    <string name='nav_rail_collapse'>收起导航栏</string>
+</resources>

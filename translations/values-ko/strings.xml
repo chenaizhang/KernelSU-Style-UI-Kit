@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">홈</string>
+    <string name="settings">설정</string>
+    <string name="about">정보</string>
+    <string name="send_log">로그 보내기</string>
+    <string name="save_log">로그 저장</string>
+    <string name="settings_check_update">업데이트 확인</string>
+    <string name="settings_check_update_summary">앱 실행 시 자동으로 업데이트를 확인합니다.</string>
+    <string name="log_saved">로그 저장됨</string>
+    <string name="confirm">확인</string>
+    <string name="processing">처리 중…</string>
+    <string name="settings_theme">테마</string>
+    <string name="settings_theme_summary">앱 테마 모드를 선택합니다.</string>
+    <string name="settings_theme_mode_system">시스템 설정에 따름</string>
+    <string name="settings_theme_mode_light">라이트</string>
+    <string name="settings_theme_mode_dark">다크</string>
+    <string name="settings_key_color">주 색상</string>
+    <string name="settings_key_color_default">기본값</string>
+    <string name="color_blue">파랑</string>
+    <string name="color_red">빨강</string>
+    <string name="color_green">초록</string>
+    <string name="color_purple">보라</string>
+    <string name="color_orange">주황</string>
+    <string name="color_teal">청록</string>
+    <string name="color_pink">분홍</string>
+    <string name="color_brown">갈색</string>
+    </resources>

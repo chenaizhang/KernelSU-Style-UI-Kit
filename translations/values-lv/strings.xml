@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">Sākums</string>
+    <string name="settings">Iestatījumi</string>
+    <string name="about">Par lietotni</string>
+    <string name="send_log">Sūtīt žurnālus</string>
+    <string name="settings_check_update">Pārbaudīt atjauninājumus</string>
+    <string name="settings_check_update_summary">Automātiski pārbaudīt atjauninājumus atverot aplikāciju</string>
+    <string name="save_log">Išsaugoti Žurnalus</string>
+    <string name="confirm">Apstiprināt</string>
+    </resources>

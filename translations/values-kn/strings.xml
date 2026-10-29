@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="send_log">ಲಾಗ್ ಕಳುಹಿಸಿ</string>
+    <string name="about">ಬಗ್ಗೆ</string>
+    <string name="home">ಮನೆ</string>
+    <string name="save_log">ಲಾಗ್ಗಳನ್ನು ಉಳಿಸಿ</string>
+    </resources>

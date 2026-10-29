@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">خانه</string>
+    <string name="settings">تنظیمات</string>
+    <string name="about">درباره</string>
+    <string name="send_log">ارسال وقایع</string>
+    <string name="save_log">ذخیره گزارش‌ها</string>
+    </resources>

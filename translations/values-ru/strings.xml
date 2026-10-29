@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">Главная</string>
+    <!--Don't translate this string!-->
+    <!--Don't translate this string!-->
+    <string name="settings">Настройки</string>
+    <string name="about">О приложении</string>
+    <string name="send_log">Отправить логи</string>
+    <!--Don't translate this string!-->
+    <string name="settings_check_update">Проверять наличие обновлений</string>
+    <string name="settings_check_update_summary">Автоматическая проверка обновлений при открытии приложения.</string>
+    <string name="save_log">Сохранить логи</string>
+    <string name="log_saved">Логи сохранены</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="processing">Обработка…</string>
+    <string name="settings_theme">Тема</string>
+    <string name="settings_theme_summary">Выберите режим темы приложения.</string>
+    <string name="settings_theme_mode_system">Как в системе</string>
+    <string name="settings_key_color">Ключевой цвет</string>
+    <string name="settings_key_color_default">По умолчанию</string>
+    <string name="color_blue">Синий</string>
+    <string name="color_red">Красный</string>
+    <string name="color_green">Зеленый</string>
+    <string name="color_purple">Фиолетовый</string>
+    <string name="color_orange">Оранжевый</string>
+    <string name="color_teal">Бирюзовый</string>
+    <string name="color_pink">Розовый</string>
+    <string name="color_brown">Коричневый</string>
+    <string name="settings_theme_mode_light">Светлая</string>
+    <string name="settings_theme_mode_dark">Тёмная</string>
+    <string name="color_deep_purple">Тёмно-фиолетовый</string>
+    <string name="color_indigo">Индиго</string>
+    <string name="color_cyan">Циан</string>
+    <string name="color_yellow">Желтый</string>
+    <string name="color_amber">Янтарный</string>
+    <string name="color_blue_grey">Серо-голубой</string>
+    <string name="color_sakura">Сакура</string>
+    </resources>

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">Acasă</string>
+    <string name="settings">Setări</string>
+    <string name="about">Despre</string>
+    <string name="send_log">Raportează jurnal</string>
+    <string name="settings_check_update">Verifică actualizarea</string>
+    <string name="settings_check_update_summary">Se verifică automat actualizările când deschizi aplicația</string>
+    <string name="save_log">Salvează Jurnale</string>
+    </resources>

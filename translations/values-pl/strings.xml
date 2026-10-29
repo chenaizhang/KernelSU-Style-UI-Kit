@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">Strona główna</string>
+    <string name="settings">Ustawienia</string>
+    <string name="about">Informacje</string>
+    <string name="send_log">Wyślij logi</string>
+    <string name="settings_check_update">Wyszukaj aktualizacje</string>
+    <string name="settings_check_update_summary">Wyszukuj aktualizacje automatycznie przy otwieraniu aplikacji.</string>
+    <string name="save_log">Zapisz dzienniki</string>
+    <string name="log_saved">Dzienniki zapisane</string>
+    <string name="confirm">Potwierdź</string>
+    <string name="processing">Przetwarzanie…</string>
+    <string name="settings_theme">Motyw</string>
+    <string name="settings_theme_summary">Wybierz tryb motywu aplikacji.</string>
+    <string name="settings_theme_mode_system">Taki jak w systemie</string>
+    <string name="settings_theme_mode_light">Jasny</string>
+    <string name="settings_theme_mode_dark">Ciemny</string>
+    <string name="settings_key_color">Kolor przycisków</string>
+    <string name="settings_key_color_default">Domyślny</string>
+    <string name="color_blue">Niebieski</string>
+    <string name="color_red">Czerwony</string>
+    <string name="color_green">Zielony</string>
+    <string name="color_purple">Purpurowy</string>
+    <string name="color_orange">Pomarańczowy</string>
+    <string name="color_teal">Turkusowy</string>
+    <string name="color_pink">Różowy</string>
+    <string name="color_brown">Brązowy</string>
+    </resources>

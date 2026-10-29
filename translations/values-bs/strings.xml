@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">Početna</string>
+    <string name="settings">Podešavanja</string>
+    <string name="send_log">Pošaljite Izvještaj</string>
+    <string name="about">O</string>
+    <string name="save_log">Sačuvaj Dnevnike</string>
+    <string name="confirm">Potvrdi</string>
+    </resources>

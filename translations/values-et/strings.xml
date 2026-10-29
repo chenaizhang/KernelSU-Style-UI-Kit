@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="send_log">Saada logid</string>
+    <string name="home">Kodu</string>
+    <string name="about">Teave</string>
+    <string name="settings">Seaded</string>
+    <string name="settings_check_update">Kontrolli uuendusi</string>
+    <string name="settings_check_update_summary">Rakenduse avamisel kontrolli automaatselt uuendusi</string>
+    <string name="save_log">Salvesta Logid</string>
+    </resources>

@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">Panimula</string>
+    <string name="about">Tungkol</string>
+    <string name="send_log">Ipadala ang mga log</string>
+    <string name="settings">Mga setting</string>
+    <string name="save_log">I-save ang mga Log</string>
+    <string name="confirm">Kumpirmahin</string>
+    <string name="settings_check_update">Tumingin para sa mga update</string>
+    <string name="settings_check_update_summary">Awtomatikong tumingin para sa mga update kapag binubuksan ang app</string>
+    <string name="log_saved">Nai-save ang mga log</string>
+    </resources>

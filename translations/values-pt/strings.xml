@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">Início</string>
+    <string name="settings">Configurações</string>
+    <string name="about">Sobre</string>
+    <string name="send_log">Enviar log</string>
+    <string name="save_log">Salvar Registros</string>
+    </resources>

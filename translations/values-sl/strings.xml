@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="send_log">Prijavite dnevnik</string>
+    <string name="home">Domov</string>
+    <string name="settings">Nastavitve</string>
+    <string name="about">O nas</string>
+    <string name="save_log">Shrani Dnevnike</string>
+    </resources>

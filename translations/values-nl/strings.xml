@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">Home</string>
+    <string name="settings">Instellingen</string>
+    <string name="about">Over</string>
+    <string name="send_log">Verzenden Logs</string>
+    <string name="settings_check_update">Controleer for updates</string>
+    <string name="settings_check_update_summary">Controleer automatisch op updates bij het openen van de app.</string>
+    <string name="save_log">Logboeken Opslaan</string>
+    <string name="log_saved">Logs opgeslagen</string>
+    <string name="confirm">Bevestigen</string>
+    <string name="processing">Verwerken…</string>
+    </resources>

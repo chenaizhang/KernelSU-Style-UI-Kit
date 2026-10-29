@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">होम</string>
+    <string name="settings">सेटिंग्ज</string>
+    <string name="about">बद्दल</string>
+    <string name="send_log">लॉग पाठवा</string>
+    <string name="save_log">लॉग जतन करा</string>
+    </resources>

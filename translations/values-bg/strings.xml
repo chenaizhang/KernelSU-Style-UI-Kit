@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">Начало</string>
+    <string name="confirm">Потвърди</string>
+    <string name="settings">Настройки</string>
+    <string name="about">Относно</string>
+    <string name="send_log">Прати логове</string>
+    <string name="settings_check_update">Провери за актуализаций</string>
+    <string name="settings_check_update_summary">Автоматично провери за актуализаций когато отворите приложението.</string>
+    <string name="save_log">Запази логове</string>
+    <string name="log_saved">Логовете бяха запазени</string>
+    <string name="processing">Обработва се…</string>
+    <string name="settings_theme">Тема</string>
+    <string name="settings_theme_summary">Изберете режима на темата на приложението.</string>
+    <string name="settings_theme_mode_system">Следвай системата</string>
+    <string name="settings_theme_mode_light">Светъл</string>
+    <string name="settings_theme_mode_dark">Тъмен</string>
+    <string name="settings_key_color">Цвят на копчето</string>
+    <string name="settings_key_color_default">По подразбиране</string>
+    <string name="color_blue">Син</string>
+    <string name="color_red">Червен</string>
+    <string name="color_green">Зелен</string>
+    <string name="color_purple">Лилав</string>
+    <string name="color_orange">Оранжево</string>
+    <string name="color_teal">Тил</string>
+    <string name="color_pink">Розово</string>
+    <string name="color_brown">Кафяво</string>
+    </resources>

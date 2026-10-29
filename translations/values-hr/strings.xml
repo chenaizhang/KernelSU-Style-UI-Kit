@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="send_log">Pošaljite izvještaje</string>
+    <string name="home">Početna</string>
+    <string name="settings">Postavke</string>
+    <string name="about">O</string>
+    <string name="save_log">Spremi zapise</string>
+    <string name="confirm">Potvrdi</string>
+    <string name="settings_check_update">Provjeri za ažuriranja</string>
+    <string name="settings_check_update_summary">Automatski provjeri za ažuriranja prilikom otvaranja aplikacije.</string>
+    <string name="log_saved">Zapisi spremljeni</string>
+    <string name="processing">Obrada…</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_theme_summary">Odaberite temu aplikacije.</string>
+    <string name="settings_theme_mode_system">Prati sustav</string>
+    <string name="settings_theme_mode_light">Svijetla</string>
+    <string name="settings_theme_mode_dark">Tamna</string>
+    <string name="settings_key_color">Boja ključa</string>
+    <string name="settings_key_color_default">Zadano</string>
+    <string name="color_blue">Plava</string>
+    <string name="color_red">Crvena</string>
+    <string name="color_green">Zelena</string>
+    <string name="color_purple">Ljubičasta</string>
+    <string name="color_orange">Narančasta</string>
+    <string name="color_teal">Tirkizna</string>
+    <string name="color_pink">Ružičasta</string>
+    <string name="color_brown">Smeđa</string>
+    </resources>

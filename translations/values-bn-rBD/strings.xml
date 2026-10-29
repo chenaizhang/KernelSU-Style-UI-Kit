@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="settings">সেটিংস</string>
+    <string name="home">হোম</string>
+    <string name="about">অ্যাবাউট</string>
+    <string name="save_log">লগ সংরক্ষণ করুন</string>
+    </resources>

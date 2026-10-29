@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home">ホーム</string>
+    <string name="settings">設定</string>
+    <string name="about">アプリについて</string>
+    <string name="send_log">ログを送信</string>
+    <string name="settings_check_update">アップデートを確認</string>
+    <string name="settings_check_update_summary">アプリを開いたときにアップデートを自動的に確認する。</string>
+    <string name="save_log">ログを保存</string>
+    <string name="log_saved">保存されたログ</string>
+    <string name="confirm">確認</string>
+    <string name="processing">処理中…</string>
+    <string name="settings_theme">テーマ</string>
+    <string name="settings_theme_summary">アプリのテーマモードを選択します。</string>
+    <string name="settings_theme_mode_system">システムに従う</string>
+    <string name="settings_theme_mode_light">ライト</string>
+    <string name="settings_theme_mode_dark">ダーク</string>
+    <string name="settings_key_color">キーカラー</string>
+    <string name="settings_key_color_default">デフォルト</string>
+    <string name="color_blue">ブルー</string>
+    <string name="color_red">レッド</string>
+    <string name="color_green">グリーン</string>
+    <string name="color_purple">パープル</string>
+    <string name="color_orange">オレンジ</string>
+    <string name="color_teal">ティール</string>
+    <string name="color_pink">ピンク</string>
+    <string name="color_brown">ブラウン</string>
+    <string name="color_deep_purple">ディープパープル</string>
+    <string name="color_indigo">インディゴ</string>
+    <string name="color_cyan">シアン</string>
+    <string name="color_yellow">イエロー</string>
+    <string name="color_amber">アンバー</string>
+    <string name="color_blue_grey">ブルーグレー</string>
+    <string name="color_sakura">桜</string>
+    </resources>

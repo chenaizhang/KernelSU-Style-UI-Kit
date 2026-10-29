@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="about">Apie</string>
+    <string name="send_log">Siųsti žurnalą</string>
+    <string name="home">Namai</string>
+    <string name="settings">Parametrai</string>
+    <string name="save_log">Saglabāt Žurnālus</string>
+    </resources>
