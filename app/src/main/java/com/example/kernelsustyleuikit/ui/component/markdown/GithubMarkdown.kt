@@ -287,6 +287,8 @@ private fun MarkdownWebView(
                                 })();
                             """.trimIndent()
                             view.evaluateJavascript(js, null)
+                            // A transparent loading layer can delay the visual-commit callback.
+                            currentOnLoadingChange(false)
                         }
 
                         override fun shouldOverrideUrlLoading(

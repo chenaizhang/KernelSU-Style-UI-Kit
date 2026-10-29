@@ -136,6 +136,17 @@ class GithubMarkdownTest {
     }
 
     @Test
+    fun pageFinishedCompletesLoadingWithoutAVisualCommit() {
+        showMarkdown()
+        val view = awaitLoadedWebView()
+        onMain {
+            loading.set(true)
+            view.webViewClient.onPageFinished(view, view.url)
+            assertFalse("A loaded page must not wait indefinitely for a visual commit", loading.get())
+        }
+    }
+
+    @Test
     fun actionButtonUsesLocalizedPlainText() {
         showMarkdown()
         val view = awaitLoadedWebView()

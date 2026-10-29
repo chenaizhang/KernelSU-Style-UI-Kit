@@ -284,7 +284,10 @@ class HomeUpdateCardTest {
     private fun await(condition: () -> Boolean) {
         val deadline = SystemClock.uptimeMillis() + 15_000
         while (!condition()) {
-            check(SystemClock.uptimeMillis() < deadline) { "Timed out waiting for update UI" }
+            if (SystemClock.uptimeMillis() >= deadline) {
+                runCatching { capture("update-timeout") }
+                error("Timed out waiting for update UI")
+            }
             SystemClock.sleep(50)
         }
     }
