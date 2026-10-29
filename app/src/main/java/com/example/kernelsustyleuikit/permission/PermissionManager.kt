@@ -3,7 +3,6 @@ package com.example.kernelsustyleuikit.permission
 import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.os.PowerManager
@@ -11,6 +10,7 @@ import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import androidx.core.net.toUri
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,20 +27,17 @@ class PermissionManager(context: Context) {
     }
 
     fun notificationRuntimePermission(): String? =
-        Manifest.permission.POST_NOTIFICATIONS.takeIf { Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.POST_NOTIFICATIONS
+        } else {
+            null
+        }
 
     fun microphonePermission(): String = Manifest.permission.RECORD_AUDIO
 
-    fun legacyStoragePermission(): String? =
-        Manifest.permission.READ_EXTERNAL_STORAGE.takeIf { Build.VERSION.SDK_INT < Build.VERSION_CODES.R }
-
     fun storageSettingsIntent(): Intent =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
-                data = Uri.parse("package:${appContext.packageName}")
-            }
-        } else {
-            appDetailsIntent()
+        Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
+            data = "package:${appContext.packageName}".toUri()
         }
 
     fun notificationSettingsIntent(): Intent =
@@ -49,26 +46,15 @@ class PermissionManager(context: Context) {
         }
 
     fun batteryWhitelistIntent(): Intent =
-        Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-            data = Uri.parse("package:${appContext.packageName}")
-        }
+        Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
 
     fun overlaySettingsIntent(): Intent =
         Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION).apply {
-            data = Uri.parse("package:${appContext.packageName}")
-        }
-
-    private fun appDetailsIntent() =
-        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            data = Uri.parse("package:${appContext.packageName}")
+            data = "package:${appContext.packageName}".toUri()
         }
 
     private fun readState() = PermissionState(
-        storage = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Environment.isExternalStorageManager()
-        } else {
-            hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-        },
+        storage = Environment.isExternalStorageManager(),
         notification = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             hasPermission(Manifest.permission.POST_NOTIFICATIONS)
         } else {
