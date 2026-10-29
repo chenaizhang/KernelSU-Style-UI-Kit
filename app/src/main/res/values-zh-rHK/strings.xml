@@ -28,6 +28,9 @@
     <string name="send_log">傳送日誌</string>
     <string name="settings_check_update">檢查更新</string>
     <string name="settings_check_update_summary">開啟本程式時自動檢查更新</string>
+    <string name="new_version_available">現有新版本 %1$s，請即升級！</string>
+    <string name="update_changelog">變更紀錄</string>
+    <string name="update">更新</string>
     <string name="save_log">儲存日誌</string>
     <string name="processing">處理中…</string>
     <string name="markdown_load_failed">無法顯示此內容，請關閉後重新開啟再試。</string>

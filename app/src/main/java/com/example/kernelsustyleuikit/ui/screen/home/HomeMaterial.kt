@@ -1,5 +1,10 @@
 package com.example.kernelsustyleuikit.ui.screen.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,6 +49,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.kernelsustyleuikit.R
 import com.example.kernelsustyleuikit.permission.PermissionState
+import com.example.kernelsustyleuikit.ui.component.WarningLevel
+import com.example.kernelsustyleuikit.ui.component.dialog.rememberConfirmDialog
 import com.example.kernelsustyleuikit.ui.component.material.TonalCard
 import com.example.kernelsustyleuikit.ui.component.material.SegmentedColumn
 import com.example.kernelsustyleuikit.ui.component.material.SegmentedListItem
@@ -70,12 +77,46 @@ fun HomePagerMaterial(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Keep the theme settings preview in sync whenever this home layout changes.
+            if (state.checkUpdateEnabled) {
+                UpdateCard(state, actions)
+            }
             WarningCard(stringResource(R.string.home_sample_notification))
             PermissionCard(permissionState, state.systemInfo.appVersion, actions.onPermissionsClick)
             InfoCard(systemInfo = state.systemInfo)
             LearnMoreCard(onOpenUrl = actions.onOpenUrl)
             Spacer(Modifier.height(bottomInnerPadding))
         }
+    }
+}
+
+@Composable
+private fun UpdateCard(state: HomeUiState, actions: HomeActions) {
+    val newVersion = state.latestVersionInfo
+    val title = stringResource(R.string.update_changelog)
+    val updateText = stringResource(R.string.update)
+
+    AnimatedVisibility(
+        visible = state.hasUpdate,
+        enter = fadeIn() + expandVertically(),
+        exit = shrinkVertically() + fadeOut(),
+    ) {
+        val updateDialog = rememberConfirmDialog(onConfirm = { actions.onOpenUrl(newVersion.downloadUrl) })
+        WarningCard(
+            message = stringResource(R.string.new_version_available, newVersion.versionCode),
+            level = WarningLevel.Notice,
+            onClick = {
+                if (newVersion.changelog.isEmpty()) {
+                    actions.onOpenUrl(newVersion.downloadUrl)
+                } else {
+                    updateDialog.showConfirm(
+                        title = title,
+                        content = newVersion.changelog,
+                        markdown = true,
+                        confirm = updateText,
+                    )
+                }
+            },
+        )
     }
 }
 
@@ -142,21 +183,30 @@ private fun PermissionCard(
 private fun WarningCard(
     message: String,
     color: Color = MaterialTheme.colorScheme.error,
+    level: WarningLevel = WarningLevel.Error,
     onClick: (() -> Unit)? = null
 ) {
+    val containerColor = if (level == WarningLevel.Notice) MaterialTheme.colorScheme.tertiaryContainer else color
     val content = @Composable {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp)
+                .padding(
+                    horizontal = if (level == WarningLevel.Notice) 16.dp else 24.dp,
+                    vertical = if (level == WarningLevel.Notice) 12.dp else 24.dp,
+                )
         ) {
-            Text(text = message, style = MaterialTheme.typography.bodyMedium)
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.contentColorFor(containerColor),
+            )
         }
     }
     if (onClick != null) {
-        TonalCard(containerColor = color, onClick = onClick, content = content)
+        TonalCard(containerColor = containerColor, onClick = onClick, content = content)
     } else {
-        TonalCard(containerColor = color, content = content)
+        TonalCard(containerColor = containerColor, content = content)
     }
 }
 

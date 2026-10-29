@@ -26,6 +26,9 @@
     <string name="send_log">傳送日誌</string>
     <string name="settings_check_update">檢查更新</string>
     <string name="settings_check_update_summary">開啟本應用程式時，自動檢查更新</string>
+    <string name="new_version_available">版本 %1$s 現已開放下載，點選開始更新。</string>
+    <string name="update_changelog">更新說明</string>
+    <string name="update">更新</string>
     <string name="save_log">儲存日誌</string>
     <string name="confirm">確認</string>
     <string name="search">搜尋</string>

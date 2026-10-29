@@ -5,7 +5,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -31,16 +32,20 @@ fun HomePager(
     val permissionManager = remember(context) { PermissionManager(context) }
     val permissionState by permissionManager.state.collectAsStateWithLifecycle()
 
-    var hasActivated by remember { mutableStateOf(false) }
-    if (isCurrentPage) hasActivated = true
+    val latestIsCurrentPage by rememberUpdatedState(isCurrentPage)
+    val initialResumeHandled = rememberSaveable { mutableStateOf(false) }
 
-    if (hasActivated) {
-        LaunchedEffect(Unit) {
+    LaunchedEffect(isCurrentPage) {
+        if (isCurrentPage) {
             viewModel.refresh()
         }
     }
     LifecycleResumeEffect(permissionManager) {
         permissionManager.refresh()
+        if (initialResumeHandled.value && latestIsCurrentPage) {
+            viewModel.refresh()
+        }
+        initialResumeHandled.value = true
         onPauseOrDispose { }
     }
 

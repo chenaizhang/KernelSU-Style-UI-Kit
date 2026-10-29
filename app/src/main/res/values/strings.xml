@@ -31,6 +31,9 @@
     <string name="send_log">Send logs</string>
     <string name="settings_check_update">Check for updates</string>
     <string name="settings_check_update_summary">Automatically check for updates when opening the app.</string>
+    <string name="new_version_available">New version %1$s is available, click to upgrade!</string>
+    <string name="update_changelog">Changelog</string>
+    <string name="update">Update</string>
     <string name="settings_enable_predictive_back">Predictive back gesture</string>
     <string name="settings_enable_predictive_back_summary">Enable predictive back gesture support.</string>
     <string name="save_log">Save logs</string>

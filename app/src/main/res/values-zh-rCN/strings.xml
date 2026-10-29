@@ -26,6 +26,9 @@
     <string name="send_log">发送日志</string>
     <string name="settings_check_update">检查更新</string>
     <string name="settings_check_update_summary">在应用启动后自动检查是否有最新版</string>
+    <string name="new_version_available">发现新版本：%1$s，点击升级！</string>
+    <string name="update_changelog">更新日志</string>
+    <string name="update">更新</string>
     <string name="settings_enable_predictive_back">预测性返回手势</string>
     <string name="settings_enable_predictive_back_summary">启用对预测性返回手势的支持</string>
     <string name="save_log">保存日志</string>

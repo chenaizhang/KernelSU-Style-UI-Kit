@@ -9,7 +9,10 @@ data class HomeUiState(
     val latestVersionInfo: LatestVersionInfo,
     val currentAppVersionCode: Long,
     val systemInfo: SystemInfo,
-)
+) {
+    val hasUpdate: Boolean
+        get() = latestVersionInfo.versionCode > currentAppVersionCode
+}
 
 @Immutable
 data class HomeActions(

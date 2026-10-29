@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.LoadingIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -52,6 +53,7 @@ fun ConfirmDialogMaterial(
                 showDialog.value = false
             },
             title = { Text(visuals.title) },
+            shape = MaterialTheme.shapes.extraLarge,
             text = {
                 visuals.content?.let { content ->
                     when {
