@@ -17,11 +17,11 @@ KernelSU Style UI Kit 是一个基于 KernelSU Manager 的 Miuix 与 Material �
 
 | Miuix 首页 | Miuix 设置 | Miuix 主题设置 |
 | --- | --- | --- |
-| <img src="assets/screenshots/miuix-home.webp" width="220" alt="Miuix 首页"> | <img src="assets/screenshots/miuix-settings.webp" width="220" alt="Miuix 设置"> | <img src="assets/screenshots/miuix-theme.webp" width="220" alt="Miuix 主题设置"> |
+| <img src="assets/screenshots/zh-CN/miuix-home.webp" width="220" alt="Miuix 首页"> | <img src="assets/screenshots/zh-CN/miuix-settings.webp" width="220" alt="Miuix 设置"> | <img src="assets/screenshots/zh-CN/miuix-theme.webp" width="220" alt="Miuix 主题设置"> |
 
 | Material 首页 | Material 设置 | Material 主题设置 |
 | --- | --- | --- |
-| <img src="assets/screenshots/material-home.webp" width="220" alt="Material 首页"> | <img src="assets/screenshots/material-settings.webp" width="220" alt="Material 设置"> | <img src="assets/screenshots/material-theme.webp" width="220" alt="Material 主题设置"> |
+| <img src="assets/screenshots/zh-CN/material-home.webp" width="220" alt="Material 首页"> | <img src="assets/screenshots/zh-CN/material-settings.webp" width="220" alt="Material 设置"> | <img src="assets/screenshots/zh-CN/material-theme.webp" width="220" alt="Material 主题设置"> |
 
 ## 快速开始
 

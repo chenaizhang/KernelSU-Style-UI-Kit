@@ -17,11 +17,11 @@ The template includes common screens and basic app functionality as a starting p
 
 | Miuix Home | Miuix Settings | Miuix Theme Settings |
 | --- | --- | --- |
-| <img src="assets/screenshots/miuix-home.webp" width="220" alt="Miuix Home"> | <img src="assets/screenshots/miuix-settings.webp" width="220" alt="Miuix Settings"> | <img src="assets/screenshots/miuix-theme.webp" width="220" alt="Miuix Theme Settings"> |
+| <img src="assets/screenshots/en/miuix-home.webp" width="220" alt="Miuix Home"> | <img src="assets/screenshots/en/miuix-settings.webp" width="220" alt="Miuix Settings"> | <img src="assets/screenshots/en/miuix-theme.webp" width="220" alt="Miuix Theme Settings"> |
 
 | Material Home | Material Settings | Material Theme Settings |
 | --- | --- | --- |
-| <img src="assets/screenshots/material-home.webp" width="220" alt="Material Home"> | <img src="assets/screenshots/material-settings.webp" width="220" alt="Material Settings"> | <img src="assets/screenshots/material-theme.webp" width="220" alt="Material Theme Settings"> |
+| <img src="assets/screenshots/en/material-home.webp" width="220" alt="Material Home"> | <img src="assets/screenshots/en/material-settings.webp" width="220" alt="Material Settings"> | <img src="assets/screenshots/en/material-theme.webp" width="220" alt="Material Theme Settings"> |
 
 ## Getting Started
 
