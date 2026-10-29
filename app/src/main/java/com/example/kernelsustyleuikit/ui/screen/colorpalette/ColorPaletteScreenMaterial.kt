@@ -15,7 +15,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +27,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.captionBar
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
@@ -51,6 +54,8 @@ import androidx.compose.material.icons.rounded.AspectRatio
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.DesignServices
 import androidx.compose.material.icons.rounded.Style
+import androidx.compose.material.icons.rounded.Swipe
+import androidx.compose.material.icons.rounded.ViewCarousel
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -64,13 +69,12 @@ import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -86,10 +90,12 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextOverflow
 import com.materialkolor.PaletteStyle
 import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.rememberDynamicColorScheme
 import com.example.kernelsustyleuikit.R
+import com.example.kernelsustyleuikit.ui.component.bottombar.useNavigationRail
 import com.example.kernelsustyleuikit.ui.component.material.SegmentedColumn
 import com.example.kernelsustyleuikit.ui.component.material.SegmentedDropdownItem
 import com.example.kernelsustyleuikit.ui.component.material.SegmentedSwitchItem
@@ -283,8 +289,42 @@ fun ColorPaletteScreenMaterial(
                     )
                 }
 
+                SegmentedColumn(
+                    modifier = Modifier.padding(top = 4.dp),
+                    content = listOf(
+                        {
+                            SegmentedSwitchItem(
+                                icon = Icons.Rounded.Swipe,
+                                title = stringResource(R.string.settings_enable_swipe_dismiss),
+                                summary = stringResource(R.string.settings_enable_swipe_dismiss_summary),
+                                checked = uiState.enableSwipeDismiss,
+                                onCheckedChange = actions.onSetEnableSwipeDismiss,
+                            )
+                        },
+                        {
+                            SegmentedDropdownItem(
+                                icon = Icons.Rounded.ViewCarousel,
+                                title = stringResource(R.string.settings_pager_gesture_mode),
+                                items = listOf(
+                                    stringResource(R.string.settings_pager_gesture_native),
+                                    stringResource(R.string.settings_pager_gesture_cross_axis),
+                                    stringResource(R.string.settings_pager_gesture_ios_like),
+                                ),
+                                selectedIndex = uiState.pagerInterceptionMode,
+                                onItemSelected = actions.onSetPagerInterceptionMode,
+                            )
+                        },
+                    ),
+                )
+
                 TonalCard(modifier = Modifier.padding(top = 4.dp)) {
-                    var sliderValue by remember(uiState.pageScale) { mutableFloatStateOf(uiState.pageScale) }
+                    val sliderState = rememberSliderState(
+                        value = uiState.pageScale,
+                        trackRange = 0.8f..1.1f,
+                    )
+                    LaunchedEffect(uiState.pageScale) {
+                        sliderState.value = uiState.pageScale
+                    }
 
                     Column(
                         modifier = Modifier.padding(16.dp),
@@ -315,17 +355,15 @@ fun ColorPaletteScreenMaterial(
                                 )
                             }
                             Text(
-                                text = "${(sliderValue * 100).toInt()}%",
+                                text = "${(sliderState.value * 100).toInt()}%",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
 
                         Slider(
-                            value = sliderValue,
-                            onValueChange = { sliderValue = it },
-                            onValueChangeFinished = { actions.onSetPageScale(sliderValue) },
-                            valueRange = 0.8f..1.1f,
+                            state = sliderState,
+                            onValueChangeFinished = { actions.onSetPageScale(sliderState.value) },
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
@@ -350,6 +388,7 @@ private fun ThemePreviewCard(
     val screenWidth = configuration.screenWidthDp.toFloat()
     val screenHeight = configuration.screenHeightDp.toFloat()
     val screenRatio = screenWidth / screenHeight
+    val useRail = useNavigationRail(enableFloatingBottomBar = false)
     val dynamicColor = keyColor == 0
 
     val colorScheme = if (dynamicColor) {
@@ -385,34 +424,37 @@ private fun ThemePreviewCard(
             shape = RoundedCornerShape(20.dp),
             border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.outlineVariant)
         ) {
-            Column {
+            val content: @Composable ColumnScope.() -> Unit = {
                 // top bar
                 Box(
                     modifier = Modifier
-                        .height(48.dp)
+                        .height(if (useRail) 36.dp else 48.dp)
                         .fillMaxWidth(),
                     contentAlignment = Alignment.TopStart
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(start = 12.dp, top = 16.dp, bottom = 8.dp),
+                            .padding(start = 12.dp, top = if (useRail) 8.dp else 16.dp, bottom = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = stringResource(id = R.string.app_name),
                             style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                             color = colorScheme.onSurface
                         )
                     }
                 }
 
-                Box(
+                BoxWithConstraints(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
                     contentAlignment = Alignment.TopStart
                 ) {
+                    val blockScale = ((maxHeight - 14.dp - 2.dp) / 152.dp).coerceIn(0f, 1f)
                     Column(
                         modifier = Modifier.padding(horizontal = 8.dp),
                         verticalArrangement = Arrangement.spacedBy(7.dp)
@@ -421,43 +463,68 @@ private fun ThemePreviewCard(
                             color = colorScheme.secondaryContainer,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(52.dp)
+                                .height(40.dp * blockScale)
                         )
+                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            repeat(2) {
+                                PreviewBlock(
+                                    color = colorScheme.surfaceContainerHighest,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(34.dp * blockScale)
+                                )
+                            }
+                        }
                         PreviewBlock(
                             color = colorScheme.surfaceContainerHighest,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(34.dp)
-                        )
-                        PreviewBlock(
-                            color = colorScheme.surfaceContainerHighest,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(44.dp)
+                                .height(44.dp * blockScale)
                         )
                     }
                 }
 
-                // bottom bar
-                Surface(
-                    color = colorScheme.surfaceContainer,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .height(40.dp)
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically
+            }
+
+            if (useRail) {
+                Row {
+                    Column(
+                        modifier = Modifier.fillMaxHeight().width(36.dp).background(colorScheme.surfaceContainer),
+                        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Icon(Icons.Filled.Home, null, tint = colorScheme.primary)
-                        Box(
-                            modifier = Modifier
-                                .size(20.dp)
-                                .clip(RoundedCornerShape(5.dp))
-                                .background(colorScheme.onSurfaceVariant.copy(alpha = 0.45f))
+                        PreviewBlock(
+                            color = colorScheme.onSurfaceVariant.copy(alpha = 0.45f),
+                            modifier = Modifier.size(20.dp),
                         )
+                    }
+                    Column(modifier = Modifier.weight(1f)) { content() }
+                }
+            } else {
+                Column {
+                    content()
+                    // bottom bar
+                    Surface(
+                        color = colorScheme.surfaceContainer,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .height(40.dp)
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Filled.Home, null, tint = colorScheme.primary)
+                            Box(
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clip(RoundedCornerShape(5.dp))
+                                    .background(colorScheme.onSurfaceVariant.copy(alpha = 0.45f))
+                            )
+                        }
                     }
                 }
             }

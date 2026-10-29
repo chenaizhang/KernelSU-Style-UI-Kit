@@ -21,6 +21,7 @@ import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import top.yukonga.miuix.kmp.nav.gesture.WindowNavigationEventBridge
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -104,6 +105,7 @@ fun SendLogBottomSheet(
         onDismissRequest = { dismiss() },
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         content = {
+            WindowNavigationEventBridge()
             Row(
                 modifier = Modifier
                     .padding(top = 16.dp, bottom = 32.dp)

@@ -34,7 +34,7 @@ fun SwitchItem(
                 indication = LocalIndication.current,
                 onValueChange = onCheckedChange
             ),
-        headlineContent = {
+        content = {
             Text(title)
         },
         leadingContent = icon?.let {

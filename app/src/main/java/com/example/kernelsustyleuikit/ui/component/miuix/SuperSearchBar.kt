@@ -63,6 +63,7 @@ import androidx.compose.ui.zIndex
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
+import com.example.kernelsustyleuikit.R
 import com.example.kernelsustyleuikit.ui.component.SearchStatus
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.InputField
@@ -265,7 +266,7 @@ fun SearchBar(
             ) {
                 Icon(
                     imageVector = MiuixIcons.Basic.Search,
-                    contentDescription = "search",
+                    contentDescription = stringResource(R.string.search),
                     modifier = Modifier
                         .size(44.dp)
                         .padding(start = 16.dp, end = 8.dp),
@@ -282,7 +283,7 @@ fun SearchBar(
                     Icon(
                         imageVector = MiuixIcons.Basic.SearchCleanup,
                         tint = colorScheme.onSurface,
-                        contentDescription = "Clean",
+                        contentDescription = stringResource(R.string.clear_search),
                         modifier = Modifier
                             .size(44.dp)
                             .padding(start = 8.dp, end = 16.dp)
@@ -318,7 +319,7 @@ fun SearchBarFake(
         leadingIcon = {
             Icon(
                 imageVector = MiuixIcons.Basic.Search,
-                contentDescription = "Clean",
+                contentDescription = stringResource(R.string.search),
                 modifier = Modifier
                     .size(44.dp)
                     .padding(start = 16.dp, end = 8.dp),

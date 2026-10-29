@@ -42,11 +42,19 @@ class SettingsRepositoryImpl : SettingsRepository {
         set(value) = prefs.edit { putString("color_spec", value) }
 
     override var enablePredictiveBack: Boolean
-        get() = prefs.getBoolean("enable_predictive_back", false)
+        get() = prefs.getBoolean("enable_predictive_back", true)
         set(value) = prefs.edit { putBoolean("enable_predictive_back", value) }
 
+    override var enableSwipeDismiss: Boolean
+        get() = prefs.getBoolean("enable_swipe_dismiss", true)
+        set(value) = prefs.edit { putBoolean("enable_swipe_dismiss", value) }
+
+    override var pagerInterceptionMode: Int
+        get() = prefs.getInt("pager_interception_mode", 1).coerceIn(0, 2)
+        set(value) = prefs.edit { putInt("pager_interception_mode", value.coerceIn(0, 2)) }
+
     override var enableBlur: Boolean
-        get() = prefs.getBoolean("enable_blur", false)
+        get() = prefs.getBoolean("enable_blur", true)
         set(value) = prefs.edit { putBoolean("enable_blur", value) }
 
     override var enableFloatingBottomBar: Boolean
@@ -56,6 +64,10 @@ class SettingsRepositoryImpl : SettingsRepository {
     override var enableFloatingBottomBarBlur: Boolean
         get() = prefs.getBoolean("enable_floating_bottom_bar_blur", true)
         set(value) = prefs.edit { putBoolean("enable_floating_bottom_bar_blur", value) }
+
+    override var navigationRailExpanded: Boolean
+        get() = prefs.getBoolean("navigation_rail_expanded", false)
+        set(value) = prefs.edit { putBoolean("navigation_rail_expanded", value) }
 
     override var pageScale: Float
         get() = prefs.getFloat("page_scale", 1.0f)

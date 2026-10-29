@@ -36,6 +36,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberContainedSearchBarState
 import androidx.compose.runtime.Composable
+import top.yukonga.miuix.kmp.nav.gesture.WindowNavigationEventBridge
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -51,8 +52,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.kernelsustyleuikit.R
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
@@ -157,14 +160,14 @@ fun SearchAppBar(
                             content = { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) }
                         )
                     } else {
-                        Icon(Icons.Filled.Search, null)
+                        Icon(Icons.Filled.Search, stringResource(R.string.search))
                     }
                 },
                 trailingIcon = {
                     if (isSearchExpanded && currentQuery.isNotEmpty()) {
                         IconButton(
                             onClick = { clearSearchText() },
-                            content = { Icon(Icons.Filled.Close, null) }
+                            content = { Icon(Icons.Filled.Close, stringResource(R.string.clear_search)) }
                         )
                     }
                 },
@@ -215,6 +218,7 @@ fun SearchAppBar(
         ),
         content = {
             val bottomPadding = SearchBarDefaults.fullScreenWindowInsets.asPaddingValues().calculateBottomPadding()
+            WindowNavigationEventBridge()
             Box(modifier = Modifier.fillMaxSize()) {
                 if (currentQuery.isNotEmpty()) {
                     searchContent(bottomPadding, collapseAndClear)

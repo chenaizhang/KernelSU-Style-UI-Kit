@@ -56,6 +56,8 @@ fun ColorPaletteScreen() {
             activity?.recreate()
         },
         onSetPageScale = viewModel::setPageScale,
+        onSetEnableSwipeDismiss = viewModel::setEnableSwipeDismiss,
+        onSetPagerInterceptionMode = viewModel::setPagerInterceptionMode,
     )
 
     when (LocalUiMode.current) {

@@ -1,20 +1,24 @@
+# Dependency versions shared by the app.
 [versions]
-agp = "9.2.1"
-kotlin = "2.4.0"
-compose-bom = "2026.05.01"
-lifecycle = "2.10.0"
+agp = "9.4.1"
+kotlin = "2.4.20"
+compose-bom = "2026.09.00"
+lifecycle = "2.11.0"
 activity-compose = "1.13.0"
 kotlinx-coroutines = "1.11.0"
-navigation3 = "1.1.2"
-navigationevent = "1.1.1"
-commonmark = "0.28.0"
-webkit = "1.16.0"
-material3 = "1.5.0-alpha22"
-materialKolor = "4.1.1"
+kotlinx-serialization = "1.11.0"
+navigationevent = "1.1.2"
+commonmark = "0.30.0"
+webkit = "1.17.0"
+material3 = "1.5.0-alpha28"
+materialKolor = "5.0.1"
 apksign = "1.4"
-miuix = "0.9.2"
-okhttp = "5.3.2"
+miuix = "0.9.4"
+okhttp = "5.5.0"
 hiddenapibypass = "6.1"
+junit = "4.13.2"
+androidx-test-runner = "1.7.0"
+androidx-test-junit = "1.3.0"
 
 [plugins]
 agp-app = { id = "com.android.application", version.ref = "agp" }
@@ -33,19 +37,22 @@ androidx-compose-material-icons-extended = { group = "androidx.compose.material"
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test-runner" }
+androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
-androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycle" }
 
 androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+junit = { module = "junit:junit", version.ref = "junit" }
 
-androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
 androidx-navigationevent-compose = { module = "androidx.navigationevent:navigationevent-compose", version.ref = "navigationevent" }
 
 commonmark = { module = "org.commonmark:commonmark", version.ref = "commonmark" }
@@ -56,7 +63,7 @@ commonmark-ext-task-list-items = { module = "org.commonmark:commonmark-ext-task-
 
 miuix-ui = { module = "top.yukonga.miuix.kmp:miuix-ui-android", version.ref = "miuix" }
 miuix-icons = { module = "top.yukonga.miuix.kmp:miuix-icons-android", version.ref = "miuix" }
-miuix-navigation3-ui = { module = "top.yukonga.miuix.kmp:miuix-navigation3-ui-android", version.ref = "miuix" }
+miuix-nav = { module = "top.yukonga.miuix.kmp:miuix-nav-android", version.ref = "miuix" }
 miuix-preference = { module = "top.yukonga.miuix.kmp:miuix-preference-android", version.ref = "miuix" }
 miuix-blur = { module = "top.yukonga.miuix.kmp:miuix-blur-android", version.ref = "miuix" }
 

@@ -4,6 +4,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuGroup
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.DropdownMenuPopup
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItemColors
@@ -30,6 +30,7 @@ import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SegmentedListItem
+import androidx.compose.material3.SelectableDropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
@@ -58,6 +59,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 val LocalListItemShapes = compositionLocalOf<ListItemShapes?> { null }
+
+// Preserve the pre-alpha28 minimum; longer content can still grow naturally.
+private val SegmentedListItemMinHeight = 56.dp
 
 @Composable
 private fun defaultSegmentedColors(): ListItemColors = ListItemDefaults.segmentedColors().copy(
@@ -143,7 +147,7 @@ fun SegmentedListItem(
         colors = colors,
         interactionSource = interactionSource,
         shapes = LocalListItemShapes.current ?: ListItemDefaults.segmentedShapes(0, 1),
-        modifier = modifier,
+        modifier = modifier.defaultMinSize(minHeight = SegmentedListItemMinHeight),
         leadingContent = leadingContent,
         trailingContent = trailingContent,
         overlineContent = overlineContent,
@@ -172,7 +176,7 @@ fun SegmentedListItem(
         checked = checked,
         onCheckedChange = onCheckedChange,
         shapes = LocalListItemShapes.current ?: ListItemDefaults.segmentedShapes(0, 1),
-        modifier = modifier,
+        modifier = modifier.defaultMinSize(minHeight = SegmentedListItemMinHeight),
         enabled = enabled,
         colors = colors,
         interactionSource = interactionSource,
@@ -205,7 +209,7 @@ fun SegmentedListItem(
         selected = selected,
         onClick = onClick,
         shapes = LocalListItemShapes.current ?: ListItemDefaults.segmentedShapes(0, 1),
-        modifier = modifier,
+        modifier = modifier.defaultMinSize(minHeight = SegmentedListItemMinHeight),
         enabled = enabled,
         colors = colors,
         interactionSource = interactionSource,
@@ -303,7 +307,7 @@ fun SegmentedDropdownItem(
                 ) {
                     DropdownMenuGroup(shapes = MenuDefaults.groupShapes()) {
                         items.forEachIndexed { index, text ->
-                            DropdownMenuItem(
+                            SelectableDropdownMenuItem(
                                 text = { Text(text) },
                                 selected = index == safeIndex,
                                 onClick = {
@@ -314,14 +318,12 @@ fun SegmentedDropdownItem(
                                     expanded = false
                                 },
                                 shapes = MenuDefaults.itemShape(index = index, count = items.size),
-                                leadingIcon = {
-                                    if (index == safeIndex) {
-                                        Icon(
-                                            Icons.Filled.Check,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(MenuDefaults.LeadingIconSize),
-                                        )
-                                    }
+                                selectedLeadingIcon = {
+                                    Icon(
+                                        Icons.Filled.Check,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(MenuDefaults.LeadingIconSize),
+                                    )
                                 },
                             )
                         }

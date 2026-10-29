@@ -8,6 +8,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,12 +20,14 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.captionBar
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,6 +39,8 @@ import androidx.compose.material.icons.rounded.CallToAction
 import androidx.compose.material.icons.rounded.Colorize
 import androidx.compose.material.icons.rounded.DesignServices
 import androidx.compose.material.icons.rounded.Style
+import androidx.compose.material.icons.rounded.Swipe
+import androidx.compose.material.icons.rounded.ViewCarousel
 import androidx.compose.material.icons.rounded.Wallpaper
 import androidx.compose.material.icons.rounded.WaterDrop
 import androidx.compose.runtime.Composable
@@ -57,10 +62,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.style.TextOverflow
 import com.materialkolor.PaletteStyle
 import com.materialkolor.dynamiccolor.ColorSpec
 import com.materialkolor.rememberDynamicColorScheme
 import com.example.kernelsustyleuikit.R
+import com.example.kernelsustyleuikit.ui.component.bottombar.useNavigationRail
 import com.example.kernelsustyleuikit.ui.component.miuix.ScaleDialog
 import com.example.kernelsustyleuikit.ui.theme.LocalEnableBlur
 import com.example.kernelsustyleuikit.ui.theme.keyColorOptions
@@ -165,7 +172,6 @@ fun ColorPaletteScreenMiuix(
                         onTabSelected = { index ->
                             actions.onSetThemeMode(index)
                         },
-                        height = 48.dp,
                     )
 
                     Card(
@@ -357,6 +363,39 @@ fun ColorPaletteScreenMiuix(
                             )
                         }
 
+                        SwitchPreference(
+                            title = stringResource(R.string.settings_enable_swipe_dismiss),
+                            summary = stringResource(R.string.settings_enable_swipe_dismiss_summary),
+                            startAction = {
+                                Icon(
+                                    Icons.Rounded.Swipe,
+                                    modifier = Modifier.padding(end = 6.dp),
+                                    contentDescription = stringResource(R.string.settings_enable_swipe_dismiss),
+                                    tint = colorScheme.onBackground,
+                                )
+                            },
+                            checked = uiState.enableSwipeDismiss,
+                            onCheckedChange = actions.onSetEnableSwipeDismiss,
+                        )
+                        OverlayDropdownPreference(
+                            title = stringResource(R.string.settings_pager_gesture_mode),
+                            items = listOf(
+                                stringResource(R.string.settings_pager_gesture_native),
+                                stringResource(R.string.settings_pager_gesture_cross_axis),
+                                stringResource(R.string.settings_pager_gesture_ios_like),
+                            ),
+                            startAction = {
+                                Icon(
+                                    Icons.Rounded.ViewCarousel,
+                                    modifier = Modifier.padding(end = 6.dp),
+                                    contentDescription = stringResource(R.string.settings_pager_gesture_mode),
+                                    tint = colorScheme.onBackground,
+                                )
+                            },
+                            selectedIndex = uiState.pagerInterceptionMode,
+                            onSelectedIndexChange = actions.onSetPagerInterceptionMode,
+                        )
+
                         var sliderValue by remember(uiState.pageScale) { mutableFloatStateOf(uiState.pageScale) }
                         ArrowPreference(
                             title = stringResource(id = R.string.settings_page_scale),
@@ -433,6 +472,7 @@ private fun ThemePreviewCardMiuix(
     val screenWidth = configuration.screenWidthDp.toFloat()
     val screenHeight = configuration.screenHeightDp.toFloat()
     val screenRatio = screenWidth / screenHeight
+    val useRail = useNavigationRail(enableFloatingBottomBar)
 
     val seedColor = if (keyColor == 0) colorScheme.primary else Color(keyColor)
     val effectiveStyle = if (keyColor == 0) PaletteStyle.TonalSpot else paletteStyle
@@ -471,50 +511,78 @@ private fun ThemePreviewCardMiuix(
                 .background(bgColor)
                 .border(1.dp, colorScheme.outline, RoundedCornerShape(20.dp))
         ) {
-            Column {
-                Row(
-                    modifier = Modifier
-                        .height(48.dp)
-                        .fillMaxWidth()
-                        .padding(start = 12.dp, top = 24.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.app_name),
-                        fontSize = 12.sp,
-                        color = textColor
-                    )
-                }
+            val content = @Composable {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    Row(
+                        modifier = Modifier
+                            .height(if (useRail) 36.dp else 48.dp)
+                            .fillMaxWidth()
+                            .padding(start = 12.dp, top = if (useRail) 12.dp else 24.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.app_name),
+                            fontSize = 12.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = textColor
+                        )
+                    }
 
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 8.dp, vertical = 6.dp),
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    PreviewBlockMiuix(
-                        color = accentCardColor,
+                    BoxWithConstraints(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(78.dp)
-                    )
-                    PreviewBlockMiuix(
-                        color = cardColor,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(34.dp)
-                    )
-                    PreviewBlockMiuix(
-                        color = cardColor,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(42.dp)
-                    )
+                            .weight(1f)
+                            .padding(horizontal = 8.dp, vertical = 6.dp),
+                    ) {
+                        val navHeight = if (useRail) 0.dp else 36.dp
+                        val blockScale = ((maxHeight - navHeight - 12.dp) / 166.dp).coerceIn(0f, 1f)
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            PreviewBlockMiuix(
+                                color = accentCardColor,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(52.dp * blockScale)
+                            )
+                            PreviewBlockMiuix(
+                                color = cardColor,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(72.dp * blockScale)
+                            )
+                            PreviewBlockMiuix(
+                                color = cardColor,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(42.dp * blockScale)
+                            )
+                        }
+                    }
                 }
-
             }
 
-            if (enableFloatingBottomBar) {
+            if (useRail) {
+                Row {
+                    Column(
+                        modifier = Modifier.fillMaxHeight().width(30.dp).background(navBarColor),
+                        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        repeat(2) {
+                            PreviewBlockMiuix(
+                                color = if (it == 0) navSelectedColor else navUnselectedColor,
+                                modifier = Modifier.size(13.dp),
+                            )
+                        }
+                    }
+                    Box(modifier = Modifier.weight(1f)) { content() }
+                }
+            } else {
+                content()
+            }
+
+            if (!useRail && enableFloatingBottomBar) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
@@ -543,7 +611,7 @@ private fun ThemePreviewCardMiuix(
                         }
                     }
                 }
-            } else {
+            } else if (!useRail) {
                 Column(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)

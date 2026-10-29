@@ -1,14 +1,15 @@
 package com.example.kernelsustyleuikit.ui.navigation3
 
 import android.os.Parcelable
-import androidx.navigation3.runtime.NavKey
+import top.yukonga.miuix.kmp.nav.core.NavKey
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 /**
- * Type-safe navigation keys for Navigation3.
+ * Type-safe navigation keys for miuix-nav.
  * Each destination is a NavKey (data object/data class) and can be saved/restored in the back stack.
  */
+@Serializable
 sealed interface Route : NavKey, Parcelable {
     @Parcelize
     @Serializable

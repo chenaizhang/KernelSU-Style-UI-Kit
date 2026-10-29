@@ -8,15 +8,15 @@ plugins {
     id("kotlin-parcelize")
 }
 
-val androidCompileSdkVersion: Int by rootProject.extra
-val androidCompileSdkVersionMinor: Int by rootProject.extra
-val androidBuildToolsVersion: String by rootProject.extra
-val androidMinSdkVersion: Int by rootProject.extra
-val androidTargetSdkVersion: Int by rootProject.extra
-val androidSourceCompatibility: JavaVersion by rootProject.extra
-val androidTargetCompatibility: JavaVersion by rootProject.extra
-val managerVersionCode: Int by rootProject.extra
-val managerVersionName: String by rootProject.extra
+val androidCompileSdkVersion = rootProject.extra["androidCompileSdkVersion"] as Int
+val androidCompileSdkVersionMinor = rootProject.extra["androidCompileSdkVersionMinor"] as Int
+val androidBuildToolsVersion = rootProject.extra["androidBuildToolsVersion"] as String
+val androidMinSdkVersion = rootProject.extra["androidMinSdkVersion"] as Int
+val androidTargetSdkVersion = rootProject.extra["androidTargetSdkVersion"] as Int
+val androidSourceCompatibility = rootProject.extra["androidSourceCompatibility"] as JavaVersion
+val androidTargetCompatibility = rootProject.extra["androidTargetCompatibility"] as JavaVersion
+val managerVersionCode = rootProject.extra["managerVersionCode"] as Int
+val managerVersionName = rootProject.extra["managerVersionName"] as String
 
 apksign {
     storeFileProperty = "KEYSTORE_FILE"
@@ -61,6 +61,8 @@ android {
 
     androidResources {
         generateLocaleConfig = true
+        // Keep unfinished translations in source without advertising or shipping them.
+        localeFilters += listOf("en", "zh-rCN", "zh-rTW", "zh-rHK")
     }
     compileSdk {
         version =
@@ -76,13 +78,23 @@ android {
         targetSdk = androidTargetSdkVersion
         versionCode = managerVersionCode
         versionName = managerVersionName
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("boolean", "IS_PR_BUILD", isPrBuild.toString())
     }
 
     lint {
         abortOnError = true
-        checkReleaseBuilds = false
+        checkReleaseBuilds = true
+    }
+
+    testOptions {
+        unitTests.all {
+            it.systemProperty("app.resourcesDir", file("src/main/res").absolutePath)
+            it.systemProperty("app.localeFilters", androidResources.localeFilters.joinToString(","))
+            it.inputs.files(fileTree("src/main/res") { include("values*/strings.xml") })
+                .withPropertyName("translationFiles")
+        }
     }
 
     compileOptions {
@@ -118,9 +130,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
 
-    implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.navigationevent.compose)
 
     implementation(libs.kotlinx.coroutines.core)
@@ -137,7 +147,7 @@ dependencies {
 
     implementation(libs.miuix.ui)
     implementation(libs.miuix.icons)
-    implementation(libs.miuix.navigation3.ui)
+    implementation(libs.miuix.nav)
     implementation(libs.miuix.preference)
     implementation(libs.miuix.blur)
 
@@ -145,6 +155,12 @@ dependencies {
     implementation(libs.okhttp)
 
     implementation(libs.material.kolor)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotlinx.serialization.json)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.test.runner)
 
 }
 

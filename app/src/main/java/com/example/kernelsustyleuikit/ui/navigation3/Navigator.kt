@@ -1,13 +1,11 @@
 package com.example.kernelsustyleuikit.ui.navigation3
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.listSaver
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.navigation3.runtime.NavKey
+import top.yukonga.miuix.kmp.nav.core.NavBackStack
+import top.yukonga.miuix.kmp.nav.core.NavKey
+import top.yukonga.miuix.kmp.nav.core.rememberNavBackStack
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -17,9 +15,8 @@ import kotlinx.coroutines.flow.SharedFlow
  * Supports push/replace/pop/popUntil and result APIs: navigateForResult/setResult/observeResult/clearResult.
  */
 class Navigator(
-    initialKey: NavKey
+    val backStack: NavBackStack,
 ) {
-    val backStack: SnapshotStateList<NavKey> = mutableStateListOf(initialKey)
 
     private val resultBus = mutableMapOf<String, MutableSharedFlow<Any>>()
 
@@ -27,14 +24,19 @@ class Navigator(
      * Push a key onto the back stack.
      */
     fun push(key: NavKey) {
-        backStack.add(key)
+        // miuix-nav requires a unique key for each live destination.
+        if (key !in backStack) {
+            backStack.add(key)
+        }
     }
 
     /**
-     * Replace the top key, or push if the stack is empty.
+     * Replace the top key, or return to the key if it is already on the stack.
      */
     fun replace(key: NavKey) {
-        if (backStack.isNotEmpty()) {
+        if (key in backStack) {
+            popUntil { it == key }
+        } else if (backStack.isNotEmpty()) {
             backStack[backStack.lastIndex] = key
         } else {
             backStack.add(key)
@@ -42,16 +44,15 @@ class Navigator(
     }
 
     /**
-     * Replace the backstack with a new list of keys if the stack is not empty.
+     * Replace the back stack with unique keys, keeping a non-empty root.
      */
     fun replaceAll(keys: List<NavKey>) {
         if (keys.isEmpty()) {
             return
         }
-        if (backStack.isNotEmpty()) {
-            backStack.clear()
-            backStack.addAll(keys)
-        }
+        val uniqueKeys = keys.distinct()
+        backStack.clear()
+        backStack.addAll(uniqueKeys)
     }
 
 
@@ -59,14 +60,16 @@ class Navigator(
      * Pop the top key if present.
      */
     fun pop() {
-        backStack.removeLastOrNull()
+        if (backStack.size > 1) {
+            backStack.removeLastOrNull()
+        }
     }
 
     /**
      * Pop until predicate matches the top key.
      */
     fun popUntil(predicate: (NavKey) -> Boolean) {
-        while (backStack.isNotEmpty() && !predicate(backStack.last())) {
+        while (backStack.size > 1 && !predicate(backStack.last())) {
             backStack.removeAt(backStack.lastIndex)
         }
     }
@@ -120,26 +123,12 @@ class Navigator(
     private fun ensureChannel(key: String): MutableSharedFlow<Any> {
         return resultBus.getOrPut(key) { MutableSharedFlow(replay = 1, extraBufferCapacity = 0) }
     }
-
-    companion object {
-        val Saver: Saver<Navigator, Any> = listSaver(save = { navigator ->
-            navigator.backStack.toList()
-        }, restore = { savedList ->
-            val initialKey = savedList.firstOrNull() ?: Route.Home
-            val navigator = Navigator(initialKey)
-            navigator.backStack.clear()
-            navigator.backStack.addAll(savedList)
-            navigator
-        })
-    }
 }
 
-
 @Composable
-fun rememberNavigator(startRoute: NavKey): Navigator {
-    return rememberSaveable(startRoute, saver = Navigator.Saver) {
-        Navigator(startRoute)
-    }
+fun rememberNavigator(startRoute: Route): Navigator {
+    val backStack = rememberNavBackStack<Route>(startRoute)
+    return remember(backStack) { Navigator(backStack) }
 }
 
 val LocalNavigator = staticCompositionLocalOf<Navigator> {

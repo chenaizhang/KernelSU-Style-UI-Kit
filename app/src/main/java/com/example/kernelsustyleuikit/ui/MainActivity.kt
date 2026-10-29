@@ -2,7 +2,6 @@ package com.example.kernelsustyleuikit.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -21,6 +20,8 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerDefaults.flingBehavior
+import androidx.compose.foundation.pager.PagerDefaults.pageNestedScrollConnection
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -29,32 +30,25 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
-import androidx.navigation3.ui.NavDisplay
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import kotlinx.coroutines.flow.MutableStateFlow
-import com.example.kernelsustyleuikit.R
 import com.example.kernelsustyleuikit.ui.component.bottombar.BottomBar
 import com.example.kernelsustyleuikit.ui.component.bottombar.MainPagerState
 import com.example.kernelsustyleuikit.ui.component.bottombar.SideRail
 import com.example.kernelsustyleuikit.ui.component.bottombar.rememberMainPagerState
+import com.example.kernelsustyleuikit.ui.component.bottombar.useNavigationRail
 import com.example.kernelsustyleuikit.ui.navigation3.LocalNavigator
 import com.example.kernelsustyleuikit.ui.navigation3.Navigator
 import com.example.kernelsustyleuikit.ui.navigation3.Route
@@ -77,6 +71,14 @@ import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.blur.layerBackdrop
 import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
 import top.yukonga.miuix.kmp.theme.MiuixTheme
+import top.yukonga.miuix.kmp.nav.core.NavDisplay
+import top.yukonga.miuix.kmp.nav.core.NavDisplayEffects
+import top.yukonga.miuix.kmp.nav.core.rememberNavSystemCornerRadius
+import top.yukonga.miuix.kmp.nav.transition.NavSwipeDirection
+import top.yukonga.miuix.kmp.utils.PagerGestureNestedScrollConnection
+import top.yukonga.miuix.kmp.utils.PagerInterceptionMode
+import top.yukonga.miuix.kmp.utils.PagerNavigationSpringSpec
+import top.yukonga.miuix.kmp.utils.pagerGestureOverride
 
 class MainActivity : ComponentActivity() {
 
@@ -125,9 +127,19 @@ class MainActivity : ComponentActivity() {
                 LocalUiMode provides uiMode,
             ) {
                 TemplateTheme(appSettings = appSettings, uiMode = uiMode) {
+                    val swipeDismiss = if (uiState.enableSwipeDismiss) {
+                        if (LocalLayoutDirection.current == androidx.compose.ui.unit.LayoutDirection.Rtl) {
+                            NavSwipeDirection.RightToLeft
+                        } else {
+                            NavSwipeDirection.LeftToRight
+                        }
+                    } else {
+                        NavSwipeDirection.None
+                    }
                     val mainScreenEntry = @Composable {
                         MainScreen(
                             initialPage = selectedMainPage,
+                            pagerInterceptionMode = uiState.pagerInterceptionMode,
                             onPageChanged = viewModel::setSelectedMainPage,
                         )
                     }
@@ -135,22 +147,18 @@ class MainActivity : ComponentActivity() {
                     val navDisplay = @Composable {
                         NavDisplay(
                             backStack = navigator.backStack,
-                            entryDecorators = listOf(
-                                rememberSaveableStateHolderNavEntryDecorator(),
-                                rememberViewModelStoreNavEntryDecorator()
-                            ),
+                            effects = NavDisplayEffects(cornerClipRadius = rememberNavSystemCornerRadius()),
                             onBack = {
                                 navigator.pop()
                             },
-                            entryProvider = entryProvider {
-                                entry<Route.Main> { mainScreenEntry() }
-                                entry<Route.About> { AboutScreen() }
-                                entry<Route.ColorPalette> { ColorPaletteScreen() }
-                                entry<Route.Permissions> { PermissionScreen() }
-                                entry<Route.Home> { mainScreenEntry() }
-                                entry<Route.Settings> { mainScreenEntry() }
-                            }
-                        )
+                        ) {
+                            entry<Route.Main>(swipeDismiss = swipeDismiss) { mainScreenEntry() }
+                            entry<Route.About>(swipeDismiss = swipeDismiss) { AboutScreen() }
+                            entry<Route.ColorPalette>(swipeDismiss = swipeDismiss) { ColorPaletteScreen() }
+                            entry<Route.Permissions>(swipeDismiss = swipeDismiss) { PermissionScreen() }
+                            entry<Route.Home>(swipeDismiss = swipeDismiss) { mainScreenEntry() }
+                            entry<Route.Settings>(swipeDismiss = swipeDismiss) { mainScreenEntry() }
+                        }
                     }
 
                     when (uiMode) {
@@ -176,15 +184,18 @@ val LocalMainPagerState = staticCompositionLocalOf<MainPagerState> { error("Loca
 @Composable
 fun MainScreen(
     initialPage: Int = 0,
+    pagerInterceptionMode: Int = PagerInterceptionMode.CrossAxisInterceptor.ordinal,
     onPageChanged: (Int) -> Unit = {},
 ) {
     val navController = LocalNavigator.current
     val enableBlur = LocalEnableBlur.current
     val enableFloatingBottomBar = LocalEnableFloatingBottomBar.current
     val enableFloatingBottomBarBlur = LocalEnableFloatingBottomBarBlur.current
+    val useNavigationRail = useNavigationRail(enableFloatingBottomBar)
     val pagerState = rememberPagerState(initialPage = initialPage, pageCount = { MainPagerConfig.PAGE_COUNT })
-    val mainPagerState = rememberMainPagerState(pagerState)
-    var userScrollEnabled by remember { mutableStateOf(true) }
+    val mainPagerState = rememberMainPagerState(pagerState, animatePageChanges = !useNavigationRail)
+    val pagerMode = PagerInterceptionMode.entries.getOrElse(pagerInterceptionMode) { PagerInterceptionMode.Native }
+    val interceptPagerGestures = pagerMode == PagerInterceptionMode.CrossAxisInterceptor
     val uiMode = LocalUiMode.current
     val surfaceColor = when (uiMode) {
         UiMode.Material -> MaterialTheme.colorScheme.surface // Blur is not used in Material, this is just a placeholder
@@ -209,9 +220,6 @@ fun MainScreen(
 
     MainScreenBackHandler(mainPagerState, navController)
 
-    val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
-    val useNavigationRail = isLandscape && !(uiMode == UiMode.Miuix && enableFloatingBottomBar)
-
     CompositionLocalProvider(
         LocalMainPagerState provides mainPagerState
     ) {
@@ -220,10 +228,24 @@ fun MainScreen(
             Box(modifier = if (blurBackdrop != null) Modifier.layerBackdrop(blurBackdrop) else Modifier) {
                 HorizontalPager(
                     modifier = Modifier
+                        .pagerGestureOverride(pagerState = mainPagerState.pagerState, mode = pagerMode)
                         .then(if (enableFloatingBottomBar && enableFloatingBottomBarBlur) Modifier.layerBackdrop(backdrop) else Modifier),
                     state = mainPagerState.pagerState,
                     beyondViewportPageCount = if (contentReady) 1 else 0,
-                    userScrollEnabled = userScrollEnabled,
+                    overscrollEffect = null,
+                    userScrollEnabled = !interceptPagerGestures,
+                    pageNestedScrollConnection = if (interceptPagerGestures) {
+                        PagerGestureNestedScrollConnection
+                    } else {
+                        pageNestedScrollConnection(
+                            state = mainPagerState.pagerState,
+                            orientation = androidx.compose.foundation.gestures.Orientation.Horizontal,
+                        )
+                    },
+                    flingBehavior = flingBehavior(
+                        state = mainPagerState.pagerState,
+                        snapAnimationSpec = PagerNavigationSpringSpec,
+                    ),
                 ) { page ->
                     val isCurrentPage = page == settledPage
                     when (page) {
@@ -242,9 +264,7 @@ fun MainScreen(
             when (uiMode) {
                 UiMode.Material -> androidx.compose.material3.Scaffold {
                     Row {
-                        SideRail(
-                            blurBackdrop = blurBackdrop,
-                        )
+                        SideRail()
                         Box(
                             modifier = Modifier
                                 .weight(1f)
@@ -257,9 +277,7 @@ fun MainScreen(
 
                 UiMode.Miuix -> Scaffold { _ ->
                     Row {
-                        SideRail(
-                            blurBackdrop = blurBackdrop,
-                        )
+                        SideRail()
                         Box(
                             modifier = Modifier
                                 .weight(1f)

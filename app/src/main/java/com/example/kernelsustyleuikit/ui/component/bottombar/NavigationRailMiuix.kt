@@ -1,23 +1,21 @@
 package com.example.kernelsustyleuikit.ui.component.bottombar
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import com.example.kernelsustyleuikit.R
+import com.example.kernelsustyleuikit.data.repository.SettingsRepositoryImpl
 import com.example.kernelsustyleuikit.ui.LocalMainPagerState
-import com.example.kernelsustyleuikit.ui.util.BlurredBar
 import top.yukonga.miuix.kmp.basic.NavigationRail
 import top.yukonga.miuix.kmp.basic.NavigationRailItem
-import top.yukonga.miuix.kmp.blur.LayerBackdrop
+import top.yukonga.miuix.kmp.basic.NavigationRailValue
+import top.yukonga.miuix.kmp.basic.rememberNavigationRailState
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
 @Composable
 fun NavigationRailMiuix(
-    blurBackdrop: LayerBackdrop?,
     modifier: Modifier = Modifier,
 ) {
     val mainState = LocalMainPagerState.current
@@ -25,26 +23,34 @@ fun NavigationRailMiuix(
     val items = BottomBarDestination.entries.map { destination ->
         Pair(stringResource(destination.label), destination.icon)
     }
+    val settingsRepo = remember { SettingsRepositoryImpl() }
+    val state = rememberNavigationRailState(
+        initialValue = if (settingsRepo.navigationRailExpanded) {
+            NavigationRailValue.Expanded
+        } else {
+            NavigationRailValue.Collapsed
+        },
+    )
+    LaunchedEffect(state.currentValue) {
+        settingsRepo.navigationRailExpanded = state.isExpanded
+    }
 
-    BlurredBar(blurBackdrop) {
-        NavigationRail(
-            modifier = modifier
-                .fillMaxHeight(),
-            color = if (blurBackdrop != null) Color.Transparent else MiuixTheme.colorScheme.surface,
-        ) {
-            Spacer(modifier = Modifier.weight(1f))
-            items.forEachIndexed { index, (label, icon) ->
-                NavigationRailItem(
-                    icon = icon,
-                    label = label,
-                    selected = mainState.selectedPage == index,
-                    onClick = {
-                        mainState.animateToPage(index)
-                    },
-                    modifier = Modifier.padding(vertical = 4.dp)
-                )
-            }
-            Spacer(modifier = Modifier.weight(1f))
+    NavigationRail(
+        modifier = modifier,
+        state = state,
+        color = MiuixTheme.colorScheme.surface,
+        expandContentDescription = stringResource(R.string.nav_rail_expand),
+        collapseContentDescription = stringResource(R.string.nav_rail_collapse),
+    ) {
+        items.forEachIndexed { index, (label, icon) ->
+            NavigationRailItem(
+                selected = mainState.selectedPage == index,
+                onClick = {
+                    mainState.animateToPage(index)
+                },
+                icon = icon,
+                label = label,
+            )
         }
     }
 }
